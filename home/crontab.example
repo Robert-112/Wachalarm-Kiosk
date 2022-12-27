@@ -10,8 +10,17 @@ DISPLAY=:0.0
 # │ │ │ │ │
 # * * * * *  command to execute
 
+# Skripte nach dem Start ausfuhren
+
+@reboot sleep 55 && ~/start_mouse_click.sh >/dev/null 2>&1
+@reboot sleep 60 && ~/start_waip_standby.sh >/dev/null 2>&1
+
+# Statusmeldung alle 10 Minuten
+
+10 * * * * ~/report_system.sh >/dev/null 2>&1
+
 # Reboot the Pi every night at 3 AM to ensure smooth operation
-0 3 * * * sudo reboot
+# 0 3 * * * sudo reboot
 
 # Example: Turn display on weekdays at 7 AM
 # Note: You may exchange "display-on" / "display-off" with "cec-on" / "cec-off" in order to use HDMI CEC

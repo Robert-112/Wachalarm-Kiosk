@@ -1,0 +1,12 @@
+# Web-Adresse, die beim Start geoeffnet werden soll, z.B. https://wachalarm.leitstelle-lausitz.de/waip/520101
+startup_url=https://wachalarm.leitstelle-lausitz.de/waip/0
+# Ausschalten des Bildschrims bei Standby aktivieren, 1 == an, 0 == aus
+standby_enable=1
+# wenn Standby aktiv: URL zur auswahl der Alarmmonitore, z.B. https://wachalarm.leitstelle-lausitz.de/waip/
+standby_waipurl=https://wachalarm.leitstelle-lausitz.de/waip
+# wenn Standby aktiv: Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. 520101 für CB FW Cottbus
+standby_wachennr=0
+# Senden von System-Statusmeldungen aktivieren, 1 == an, 0 == aus
+report_enable=1
+# wenn System-Statusmeldungen aktiv, dann an folgende URL senden
+report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage

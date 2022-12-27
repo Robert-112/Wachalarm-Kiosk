@@ -17,27 +17,39 @@ sudo nitrogen --set-centered background.png
 # Hide cursor afer 5 seconds of inactivity
 unclutter -idle 5 -root &
 
-# Make sure Chromium profile is marked clean, even if it crashed
-if [ -f .config/chromium/Default/Preferences ]; then
-    cat .config/chromium/Default/Preferences \
-        | jq '.profile.exit_type = "SessionEnded" | .profile.exited_cleanly = true' \
-        > .config/chromium/Default/Preferences-clean
-    mv .config/chromium/Default/Preferences{-clean,}
-fi
+#Set CrProfile to the value of your startup profile's config folder
+CrProfile="Default"
+
+HomeFolder="/home/pi"
 
 # Remove notes of previous sessions, if any
 find .config/chromium/ -name "Last *" -exec rm {} +
 
+#Delete SingletonLock
+rm -f $HomeFolder/.config/chromium/SingletonLock
+rm -f $HomeFolder/.cache/chromium
+
+#Clean up the randomly-named file(s)
+for i in $HomeFolder/.config/chromium/$CrProfile/.org.chromium.Chromium.*; do
+    sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' $i
+    sed -i 's/"exit_state": "Crashed"/"exit_state": "Normal"/' $i
+    sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' $i
+done
+
+#Clean up Preferences
+sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' $HomeFolder/.config/chromium/$CrProfile/Preferences
+sed -i 's/"exit_state": "Crashed"/"exit_state": "Normal"/' $HomeFolder/.config/chromium/$CrProfile/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' $HomeFolder/.config/chromium/$CrProfile/Preferences
+
+#Clean up Local State
+sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' $HomeFolder/.config/chromium/"Local State"
+
 # Get URL from file (if set)
-URL=""
-if [ -f /boot/chilipie_url.txt ]; then
-    URL="$(head -n 1 /boot/chilipie_url.txt)"
-elif [ -f /home/pi/chilipie_url.txt ]; then
-    URL="$(head -n 1 /home/pi/chilipie_url.txt)"
-fi
-if [ -n "$URL" ]; then
-    SERIAL="$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 | xargs)" # Get serial number
-    URL="$(echo $URL | SERIAL=$SERIAL envsubst '$SERIAL')"
+URL="file:///home/pi/LICENSE.html"
+standby_enable=0
+if [ -f /boot/wachalarm_einstellungen.txt ]; then
+    source /boot/wachalarm_einstellungen.txt
+    URL=$startup_url
 fi
 
 # Start and detach Chromium
@@ -47,7 +59,7 @@ chromium-browser \
   --start-fullscreen \
   --window-position=9000,9000 \
   --disable-infobars \
-  --check-for-update-interval=1 --simulate-critical-update \
+  --check-for-update-interval=604800 \
   $URL &
 # See https://github.com/futurice/chilipie-kiosk/issues/99#issuecomment-597119842 for the need for the fishy-sounding "--check-for-update-interval=1 --simulate-critical-update" switches; TODO: remove when not needed
 

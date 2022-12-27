@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# source the user's bashrc if it exists
+if [ -f "${HOME}/.bashrc" ] ; then
+  source "${HOME}/.bashrc"
+fi
+
 # If this is a tty, and the one where we want to run X, do so
 if [ "$(tty)" == "/dev/tty1" ]; then
   # Redirect any output so it doesn't briefly appear when starting X

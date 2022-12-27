@@ -1,0 +1,11 @@
+{
+  "name": "waip_standby_websocket",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node waip_standby_websocket.js"
+  },
+  "dependencies": {
+    "socket.io-client": "2.5.0"
+  }
+}
