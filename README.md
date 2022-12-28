@@ -1,26 +1,16 @@
-# chilipie-kiosk
+# Wachalarm-Kiosk
 
-Easy-to-use **Raspberry Pi** image for booting directly into **full-screen Chrome**, with built-in convenience features for unattended operation. Perfect for **dashboards and build monitors**.
+Hierbei handelt es sich um ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry Pi**, mit dem der Wachalarm direkt im Vollbild z.B. auf einem Monitor anzeigt. 
 
 ## Features
 
-![Screenshots](https://github.com/futurice/chilipie-kiosk/blob/master/docs/screenshot.png)
+![Wachalarm FF Elsterwerda](https://user-images.githubusercontent.com/19272095/89555705-ae166100-d810-11ea-99d6-089c08687a14.png)
 
-```
-▲ Customizable, full screen        ▲ Boots directly into a simple     ▲ WiFi & other system config
-      startup graphics                  getting started -guide          is just one keypress away
-```
-
-- **Boots directly to full-screen Chrome** - with all the features of a modern browser
-- **No automatic updates** - no surprises due to Chrome (or other packages) suddenly updating
-- **Automatic crash-recovery** - accidental unpowering won't result in "Chrome did not shut down correctly :("
-- **Custom startup graphics** - displays [customizable graphics](home/background.png) instead of console messages during startup
-- **Lightweight window manager** - uses [Matchbox](https://www.yoctoproject.org/tools-resources/projects/matchbox) for minimal clutter and memory footprint
-- **HDMI output control** - ready-made scripts for [turning off the display](home/crontab.example) outside of office hours, for example
+- **Startet unmittelbar im Vollbild** - Chromium mit allen wichtigen Funktionen
+- **Automatatische Sicherheitsupdates** - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
+- **Automatische Wiederherstellung** - bei Neustart oder Stromausfall startet das System im vorherigen Zustand neu
+- **Stromsparfunktion** - mittels HDMI-CEC kann der Monitor ausgeschaltet werden, sofern kein Einsatz anliegt
 - **Cursor hiding** - if you leave a mouse plugged in, the cursor is hidden after a brief period of inactivity
-- **Automatic reboots** - reboots the Pi nightly, when nobody's watching, to keep it running smoothly
-- **Based on a recent Debian** - if you want to add your own tweaks, all the expected packages are one `apt-get` away
-- **Batteries included** - the most common how-to's and ProTips have been collected to the [first-boot document](docs/first-boot.md)
 
 ## Getting started
 
