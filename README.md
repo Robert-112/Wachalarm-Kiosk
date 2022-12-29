@@ -142,16 +142,17 @@ Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/
 
 ## Bekannte Fehler
 
-### Kein Ton über HDMI Raspberry Pi 4
-- stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen (direkt neben dem USB-C-Stromanschluss)
-- stellen Sie sicher das der Monitor / Fernseher über den angeschlossenen HDMI-Port auch wirklich einen Ton ausgegeben kann
+### Kein Ton über HDMI (Raspberry Pi 4)
+- stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
+- prüfen Sie ob der Monitor / Fernseher über den angeschlossenen HDMI-Port auch wirklich einen Ton ausgegeben kann
 - prüfen Sie mittels `sudo raspi-config` ob HDMI als Audio-Ausgabequelle eingestellt wurde
 
-### ich benötige ein anderes Kennwort ein meiner Umgebung
+### ich benötige ein anderes Kennwort
 - öffnen Sie die Eingabekonsole
 - `sudo raspi-config`
 - Navigieren Sie zu `Change User Password`
 - geben Sie ein neues Passwort ein und bestätigen Sie es
+- das eingegeben Kennwort gilt nun für den Benutzer `pi`
 
 ## Sonstiges
 
