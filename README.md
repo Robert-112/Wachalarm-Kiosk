@@ -1,10 +1,12 @@
 # Wachalarm-Kiosk
 
-Hierbei handelt es sich um ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry Pi**, mit dem der Wachalarm direkt im Vollbild z.B. auf einem Monitor anzeigt. 
+Hier finden Sieein einfach zu nutzendes SD-Karten-Image für einen **Raspberry Pi**, mit dem der Wachalarm (oder eine andere Webseite) direkt im Vollbild z.B. auf einem Monitor anzeigt werden kann. 
 
-## Features
+## Beispielfoto
 
 ![Wachalarm FF Elsterwerda](https://user-images.githubusercontent.com/19272095/89555705-ae166100-d810-11ea-99d6-089c08687a14.png)
+
+## Funktionen
 
 - **Startet unmittelbar im Vollbild** - Chromium mit allen wichtigen Funktionen
 - **Automatatische Sicherheitsupdates** - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
@@ -12,9 +14,9 @@ Hierbei handelt es sich um ein einfach zu nutzendes SD-Karten-Image für einen *
 - **Stromsparfunktion** - mittels HDMI-CEC kann der Monitor ausgeschaltet werden, sofern kein Einsatz anliegt
 - **Cursor hiding** - if you leave a mouse plugged in, the cursor is hidden after a brief period of inactivity
 
-## Getting started
+## Inbetriebnahme
 
-1. Check that you have [compatible hardware](#hardware).
+1. Benötigt wird ein Raspberry Pi ( [compatible hardware](#hardware).
 2. Download the [latest image](https://github.com/futurice/chilipie-kiosk/releases).
 3. Decompress it.
 4. Flash the image onto your SD card. We recommend [Etcher](https://etcher.io/) for this: it's delightfully easy to use, cross platform, and will verify the result automatically. If you know what you're doing, you can of course also just `sudo dd bs=1m if=chilipie-kiosk-vX.Y.Z.img of=/dev/rdisk2`.
