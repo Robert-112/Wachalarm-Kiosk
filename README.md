@@ -33,14 +33,16 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 2. Unter der Partition "Boot" der SD-Karte findet sich die Datei *[wachalarm_einstellungen.txt](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/home/wachalarm_einstellungen.txt)*.
 3. folgende Einstellungen können gesetzt werden:
 
+
 #### Webseite beim Start
-Web-Adresse, die beim Start geöffnet werden soll, z.B. https://wachalarm.leitstelle-lausitz.de/waip/520101
+Webseite, die beim Start geöffnet werden soll, z.B. https://wachalarm.leitstelle-lausitz.de/waip/520101
 ```
 startup_url=https://wachalarm.leitstelle-lausitz.de/waip/520101
 ```
 
 #### Standby aktivieren
-Automatisches Ausschalten des Bildschirms aktivieren, sofern kein Einsatz anliegt 
+Automatisches Ausschalten des Bildschirms aktivieren, sofern kein Einsatz anliegt
+
 1 == an, 0 == aus
 ```
 standby_enable=1
@@ -48,7 +50,9 @@ standby_enable=1
 
 #### Standby - Alarmmonitore-URL
 *(gilt nur wenn Standby aktiv)*
+
 URL zur auswahl der Alarmmonitore, z.B. https://wachalarm.leitstelle-lausitz.de/waip/ .
+
 Die URL ist notwendig damit das Standby-Signal per Websocket korrekt ausgewertet werden kann.
 (! dies ist nicht die URL des einzelnen Alarmmonitors !)
 ```
@@ -57,6 +61,7 @@ standby_waipurl=https://wachalarm.leitstelle-lausitz.de/waip
 
 #### Standby - Wachennummer
 *(gilt nur wenn Standby aktiv)*
+
 Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. 520101 für CB FW Cottbus
 ```
 standby_wachennr=520101
@@ -64,6 +69,7 @@ standby_wachennr=520101
 
 #### System-Statusmeldungen aktivieren
 Automatisches senden von Status-Meldungen des Systems aktivieren. 
+
 Es handelt sich um allgemeine Systeminforamtionen wie z.B. Kernel-Version, Hardwaremerkmale & Udpatestatus. Personenbezogene Daten werden nicht ermittelt.
 1 == an, 0 == aus
 ```
@@ -72,6 +78,7 @@ report_enable=1
 
 #### System-Statusmeldungen - Status-URL
 *(gilt nur wenn System-Statusmeldungen aktiv)*
+
 URL an die Status-Meldungen durch das System gesendet werden.
 ```
 report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
@@ -79,22 +86,32 @@ report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
 
 ### WLAN Setup
 
-1. After flashing remount your SD card.
-2. Create a `wpa_supplicant.conf` in your SD cards boot folder
-3. Copy the [sample wpa_supplicant.conf](#sample-wpasupplicantconf) file into the boot folder on the SD card.
-4. Replace `WiFi-SSID` and `WiFi-PASSWORD` with your WiFi configuration.
-5. Optional: Set the country code to your country code e.g. `DE`.
+1. SD-Karte in PC einsetzen.
+2. In der Boot-Partition eine Datei mit dem Namen `wpa_supplicant.conf` erstellen.
+3. Eine fertige Vorlage findet sich hier: [wpa_supplicant.conf](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config/wpa_supplicant.conf) 
+4. Ersetzen Sie `Name-des-WLANs` und `ganz-geheimes-kennwort` mit Ihren eigenen WLAN-Einstellungen.
+5. Datei speichern und SD-Karte wieder in den Raspberry Pi einsetzen. Er sollte sich jetzt eigenständig mit dem WLAN verbinden.
 
-#### Sample wpa_supplicant.conf
+#### Beispiel wpa_supplicant.conf für WLAN _mit Kennwort_
 ```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+country=DE
 update_config=1
-country=US
-
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 network={
-  ssid="WiFi-SSID"
-  psk="WiFi-PASSWORD"
   key_mgmt=WPA-PSK
+  ssid="Name-des-WLANs"
+  psk="ganz-geheimes-kennwort"
+}
+```
+
+#### Beispiel wpa_supplicant.conf für WLAN _ohne Kennwort_
+```
+country=DE
+update_config=1
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+network={
+   ssid="Name-des-WLANs"
+   key_mgmt=NONE
 }
 ```
 
@@ -136,4 +153,4 @@ The Pi needs a [2.5 Amp power source](https://www.raspberrypi.org/documentation/
 
 ## Sonstiges
 
-Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weiter Informationen und Antworten zu vielen Detailfragen.
+Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
