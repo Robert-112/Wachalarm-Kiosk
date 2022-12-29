@@ -152,7 +152,7 @@ Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/
 - `sudo raspi-config`
 - Navigieren Sie zu `Change User Password`
 - geben Sie ein neues Passwort ein und bestätigen Sie es
-- das eingegeben Kennwort gilt nun für den Benutzer `pi`
+- das eingegebene Kennwort gilt für den Benutzer `pi`
 
 ## Sonstiges
 
