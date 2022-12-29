@@ -1,6 +1,6 @@
 # Wachalarm-Kiosk
 
-Hier finden Sieein einfach zu nutzendes SD-Karten-Image für einen **Raspberry Pi**, mit dem der Wachalarm (oder eine andere Webseite) direkt im Vollbild z.B. auf einem Monitor anzeigt werden kann. 
+Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry Pi**, mit dem der Wachalarm (oder eine andere Webseite) direkt im Vollbild z.B. auf einem Monitor anzeigt werden kann. 
 
 ## Beispielfoto
 
@@ -11,7 +11,7 @@ Hier finden Sieein einfach zu nutzendes SD-Karten-Image für einen **Raspberry P
 - **Startet unmittelbar im Vollbild** - Chromium Web-Browser mit allen wichtigen Funktionen
 - **Automatatische Sicherheitsupdates** - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
 - **Automatische Wiederherstellung** - bei Neustart oder Stromausfall startet das System im vorherigen Zustand eigenständig neu
-- **Stromsparfunktion** - mittels HDMI-CEC kann der Monitor ausgeschaltet werden, sofern kein Einsatz anliegt (optional)
+- *Optional:* **Stromsparfunktion** - mittels HDMI-CEC kann der Monitor ausgeschaltet werden, sofern kein Einsatz anliegt
 - **Maus wird ausgeblendet** - sofern eine Maus angeschlossen ist, wird diese nach inaktivität ausgeblendet
 
 ## Inbetriebnahme
@@ -21,19 +21,61 @@ Hier finden Sieein einfach zu nutzendes SD-Karten-Image für einen **Raspberry P
 3. Dateien entpacken.
 4. Image auf eine SD-Karate schreiben. Hierzu kann unter Windows die Anwendung [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) genutzt werden.
 6. [Webseite und weitere Optionen festlegen](#konfigurations-datei)
-7. *Optional*: [automatische WLAN-Verbindung](#wlan-setup)
-8. *Optional*: [feste IP-Adresse hinterlegen](#ip-adresse)
+7. *Optional*: automatische [WLAN-Verbindung](#wlan-setup) einstellen
+8. *Optional*: [feste IP-Adresse](#ip-adresse) hinterlegen
 9. SD-Karte in den Raspberry Pi einsetzen und starten.
 
 ## Einstellungen
 
 ### Konfigurations-Datei
 
-1. After flashing remount your SD card.
-2. Create a *chilipie_url.txt* in your SD cards boot folder or */home/pi*.
-3. Write URL in **first** line of file.
+1. SD-Karte in einen PC einlgen (z.B. per USB-Adapter).
+2. Unter der Partition "Boot" der SD-Karte findet sich die Datei *[wachalarm_einstellungen.txt](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/home/wachalarm_einstellungen.txt)*.
+3. folgende Einstellungen können gesetzt werden:
 
-Note: You can user `${SERIAL}` to get Pi's serial number into URL.  
+#### Webseite beim Start
+Web-Adresse, die beim Start geöffnet werden soll, z.B. https://wachalarm.leitstelle-lausitz.de/waip/520101
+```
+startup_url=https://wachalarm.leitstelle-lausitz.de/waip/520101
+```
+
+#### Standby aktivieren
+Automatisches Ausschalten des Bildschirms aktivieren, sofern kein Einsatz anliegt 
+1 == an, 0 == aus
+```
+standby_enable=1
+```
+
+#### Standby - Alarmmonitore-URL
+*(gilt nur wenn Standby aktiv)*
+URL zur auswahl der Alarmmonitore, z.B. https://wachalarm.leitstelle-lausitz.de/waip/ .
+Die URL ist notwendig damit das Standby-Signal per Websocket korrekt ausgewertet werden kann.
+(! dies ist nicht die URL des einzelnen Alarmmonitors !)
+```
+standby_waipurl=https://wachalarm.leitstelle-lausitz.de/waip
+```
+
+#### Standby - Wachennummer
+*(gilt nur wenn Standby aktiv)*
+Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. 520101 für CB FW Cottbus
+```
+standby_wachennr=520101
+```
+
+#### System-Statusmeldungen aktivieren
+Automatisches senden von Status-Meldungen des Systems aktivieren. 
+Es handelt sich um allgemeine Systeminforamtionen wie z.B. Kernel-Version, Hardwaremerkmale & Udpatestatus. Personenbezogene Daten werden nicht ermittelt.
+1 == an, 0 == aus
+```
+report_enable=1
+```
+
+#### System-Statusmeldungen - Status-URL
+*(gilt nur wenn System-Statusmeldungen aktiv)*
+URL an die Status-Meldungen durch das System gesendet werden.
+```
+report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
+```
 
 ### WLAN Setup
 
