@@ -86,6 +86,8 @@ report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
 
 ### WLAN Setup
 
+WLAN-Verbindungen lassen Sich beim Raspberry über eine spezielle Datei vorgeben.
+
 1. SD-Karte in PC einsetzen.
 2. In der Boot-Partition eine Datei mit dem Namen `wpa_supplicant.conf` erstellen.
 3. Eine fertige Vorlage findet sich hier: [wpa_supplicant.conf](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config/wpa_supplicant.conf) 
@@ -117,39 +119,29 @@ network={
 
 ### IP-Adresse
 
-1. After flashing remount your SD card.
-2. Create a `wpa_supplicant.conf` in your SD cards boot folder
-3. Copy the [sample wpa_supplicant.conf](#sample-wpasupplicantconf) file into the boot folder on the SD card.
-4. Replace `WiFi-SSID` and `WiFi-PASSWORD` with your WiFi configuration.
-5. Optional: Set the country code to your country code e.g. `DE`.
+Mittels der Datei `cmdline.txt` kann direkt eine feste IP-Adresse für den Raspberry vorgegeben werden.
 
-#### Sample wpa_supplicant.conf
-```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-country=US
+1. SD-Karte in PC einsetzen.
+2. In der Boot-Partition die Datei `cmdline.txt` finden und mit einem Editor öffnen.
+3. Am ende der ersten Zeile folgenden Text hinzufügen (keine neue Ziele):
 
-network={
-  ssid="WiFi-SSID"
-  psk="WiFi-PASSWORD"
-  key_mgmt=WPA-PSK
-}
-```
+```ip=192.168.2.20::192.168.2.1:255.255.255.0:wachalarm:eth0:off:192.168.2.1```
+
+Damit wird die IP-Adresse für die Schnittstelle `eth0` auf 192.168.2.20 festlegt. Einstellungen für das Gateway (`192.168.2.1`), das Subnetz (`255.255.255.0`), den Hostnamen (`wachalarm`) und den DNS-Server (`192.168.2.1`) werden ebenfalls definiert.
+
+Bereits angepasste `cmdline.txt`-Dateien finden Sie hier: [optional_boot_config](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config) 
 
 ## Hardware
 
-Works with [all Raspberry Pi versions](https://www.raspberrypi.org/products/). Versions 3 and 4 are recommended, though, since the smaller ones can be a bit underpowered for rendering complex dashboards. The 3 and 4 also come with built-in WiFi, which is convenient (though both [official](https://www.raspberrypi.org/products/raspberry-pi-usb-wifi-dongle/) and [off-the-shelf](https://elinux.org/RPi_USB_Wi-Fi_Adapters) USB WiFi dongles can work equally well).
+Dieses Images sollte mit allen [Raspberry Pi's](https://www.raspberrypi.org/products/) funktionieren. Die Versionen 3 und 4 werden empfohlen, weil die kleinen Varianten zu wenige Leistung bieten. 3 und 4 haben zudem ein eingebautes WLAN-Modul.
 
-Make sure you have a [compatible 4+ GB SD card](http://elinux.org/RPi_SD_cards). In general, any Class 10 card will work, as they're fast enough and of high enough quality.
+Stellen Sie sicher, dass Sie eine [kompatible SD-Karte](http://elinux.org/RPi_SD_cards) verwenden (mind. 4 GB). `Class 10`-Karten sollten in jedem Fall funktionieren.
 
-The Pi needs a [2.5 Amp power source](https://www.raspberrypi.org/documentation/hardware/raspberrypi/power/README.md). Most modern USB chargers you'll have laying around will work, but an older/cheaper one may not.
+Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/documentation/hardware/raspberrypi/power/README.md). 
 
-## Common issues
+## Bekannte Fehler
 
-- **I get a kernel panic on boot, or the image keeps crashing.** The Raspberry Pi is somewhat picky about about its SD cards. It's also possible the SD card has a bad sector in a critical place, and `dd` wasn't be able to tell you. Double-check that you're using [a blessed SD card](http://elinux.org/RPi_SD_cards), and try flashing the image again.
-- **I see a "rainbow square" or "yellow lightning" in the top right corner of the screen, and the device seems unstable.** This usually means the Pi isn't getting enough amps from your power supply. This is sometimes the case in more exotic setups (e.g. using the USB port of your display to power the Pi) or with cheap power supplies. Try another one.
-- **The [display control scripts](home/display-on.sh) don't turn off the display device.** Normal PC displays will usually power down when you cut off the signal, but this is not the case for many TV's. Please check if your TV has an option in its settings for enabling this, as some do. If not, you can [try your luck with HDMI CEC signals](http://raspberrypi.stackexchange.com/questions/9142/commands-for-using-cec-client), but the TV implementations of the spec are notoriously spotty.
-- **The MicroSD card isn't flashing correctly, I don't see the boot partition.** This commonly happens on Windows computers and can be fixed by extracting the `chilipie*.img` file from the `tar.gz`. You will need to use an extraction tool that supports both gzip and tar archive formats, such as 7zip. Extract the contents of the `img.tar.gz` file, then extract the contents of the resulting `img.tar` file again. You should be left with an `.img` file, which you can then use with Etcher to flash your SD card.
+- Auflistung folgt...
 
 ## Sonstiges
 
