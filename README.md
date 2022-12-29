@@ -71,6 +71,7 @@ standby_wachennr=520101
 Automatisches senden von Status-Meldungen des Systems aktivieren. 
 
 Es handelt sich um allgemeine Systeminforamtionen wie z.B. Kernel-Version, Hardwaremerkmale & Udpatestatus. Personenbezogene Daten werden nicht ermittelt.
+
 1 == an, 0 == aus
 ```
 report_enable=1
@@ -133,7 +134,7 @@ Bereits angepasste `cmdline.txt`-Dateien finden Sie hier: [optional_boot_config]
 
 ## Hardware
 
-Dieses Images sollte mit allen [Raspberry Pi's](https://www.raspberrypi.org/products/) funktionieren. Die Versionen 3 und 4 werden empfohlen, weil die kleinen Varianten zu wenige Leistung bieten. 3 und 4 haben zudem ein eingebautes WLAN-Modul.
+Dieses Image sollte mit allen [Raspberry Pi's](https://www.raspberrypi.org/products/) funktionieren. Die Versionen 3 und 4 werden empfohlen, weil die kleinen Varianten zu wenig Leistung bieten. 3 und 4 haben zudem ein eingebautes WLAN-Modul.
 
 Stellen Sie sicher, dass Sie eine [kompatible SD-Karte](http://elinux.org/RPi_SD_cards) verwenden (mind. 4 GB). `Class 10`-Karten sollten in jedem Fall funktionieren.
 
