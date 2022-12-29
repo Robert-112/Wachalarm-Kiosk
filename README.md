@@ -8,24 +8,26 @@ Hier finden Sieein einfach zu nutzendes SD-Karten-Image für einen **Raspberry P
 
 ## Funktionen
 
-- **Startet unmittelbar im Vollbild** - Chromium mit allen wichtigen Funktionen
+- **Startet unmittelbar im Vollbild** - Chromium Web-Browser mit allen wichtigen Funktionen
 - **Automatatische Sicherheitsupdates** - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
-- **Automatische Wiederherstellung** - bei Neustart oder Stromausfall startet das System im vorherigen Zustand neu
-- **Stromsparfunktion** - mittels HDMI-CEC kann der Monitor ausgeschaltet werden, sofern kein Einsatz anliegt
-- **Cursor hiding** - if you leave a mouse plugged in, the cursor is hidden after a brief period of inactivity
+- **Automatische Wiederherstellung** - bei Neustart oder Stromausfall startet das System im vorherigen Zustand eigenständig neu
+- **Stromsparfunktion** - mittels HDMI-CEC kann der Monitor ausgeschaltet werden, sofern kein Einsatz anliegt (optional)
+- **Maus wird ausgeblendet** - sofern eine Maus angeschlossen ist, wird diese nach inaktivität ausgeblendet
 
 ## Inbetriebnahme
 
-1. Benötigt wird ein Raspberry Pi ( [compatible hardware](#hardware).
-2. Download the [latest image](https://github.com/futurice/chilipie-kiosk/releases).
-3. Decompress it.
-4. Flash the image onto your SD card. We recommend [Etcher](https://etcher.io/) for this: it's delightfully easy to use, cross platform, and will verify the result automatically. If you know what you're doing, you can of course also just `sudo dd bs=1m if=chilipie-kiosk-vX.Y.Z.img of=/dev/rdisk2`.
-5. *Optional*: [Set URL before boot](#set-url-before-boot)
-6. *Optional*: [Setup automatic WiFi](#automatic-wifi-setup)
-7. Insert the SD card to your Pi and power it up.
-8. You should land in the [first-boot document](docs/first-boot.md), for further instructions & ideas.
+1. Benötigt wird ein Raspberry Pi ([kompatible Hardware](#hardware)).
+2. [Aktuelles Image](https://github.com/Robert-112/Wachalarm-Kiosk/releases) herunterladen.
+3. Dateien entpacken.
+4. Image auf eine SD-Karate schreiben. Hierzu kann unter Windows die Anwendung [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) genutzt werden.
+6. [Webseite und weitere Optionen festlegen](#konfigurations-datei)
+7. *Optional*: [automatische WLAN-Verbindung](#wlan-setup)
+8. *Optional*: [feste IP-Adresse hinterlegen](#ip-adresse)
+9. SD-Karte in den Raspberry Pi einsetzen und starten.
 
-### Set URL before boot
+## Einstellungen
+
+### Konfigurations-Datei
 
 1. After flashing remount your SD card.
 2. Create a *chilipie_url.txt* in your SD cards boot folder or */home/pi*.
@@ -33,7 +35,28 @@ Hier finden Sieein einfach zu nutzendes SD-Karten-Image für einen **Raspberry P
 
 Note: You can user `${SERIAL}` to get Pi's serial number into URL.  
 
-### Automatic WiFi setup
+### WLAN Setup
+
+1. After flashing remount your SD card.
+2. Create a `wpa_supplicant.conf` in your SD cards boot folder
+3. Copy the [sample wpa_supplicant.conf](#sample-wpasupplicantconf) file into the boot folder on the SD card.
+4. Replace `WiFi-SSID` and `WiFi-PASSWORD` with your WiFi configuration.
+5. Optional: Set the country code to your country code e.g. `DE`.
+
+#### Sample wpa_supplicant.conf
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=US
+
+network={
+  ssid="WiFi-SSID"
+  psk="WiFi-PASSWORD"
+  key_mgmt=WPA-PSK
+}
+```
+
+### IP-Adresse
 
 1. After flashing remount your SD card.
 2. Create a `wpa_supplicant.conf` in your SD cards boot folder
@@ -69,6 +92,6 @@ The Pi needs a [2.5 Amp power source](https://www.raspberrypi.org/documentation/
 - **The [display control scripts](home/display-on.sh) don't turn off the display device.** Normal PC displays will usually power down when you cut off the signal, but this is not the case for many TV's. Please check if your TV has an option in its settings for enabling this, as some do. If not, you can [try your luck with HDMI CEC signals](http://raspberrypi.stackexchange.com/questions/9142/commands-for-using-cec-client), but the TV implementations of the spec are notoriously spotty.
 - **The MicroSD card isn't flashing correctly, I don't see the boot partition.** This commonly happens on Windows computers and can be fixed by extracting the `chilipie*.img` file from the `tar.gz`. You will need to use an extraction tool that supports both gzip and tar archive formats, such as 7zip. Extract the contents of the `img.tar.gz` file, then extract the contents of the resulting `img.tar` file again. You should be left with an `.img` file, which you can then use with Etcher to flash your SD card.
 
-## Acknowledgements
+## Sonstiges
 
-This project is a grateful recipient of [Futurice Open Source sponsorship](http://futurice.com/blog/sponsoring-free-time-open-source-activities). Thank you. 🙇
+Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weiter Informationen und Antworten zu vielen Detailfragen.
