@@ -1,82 +1,159 @@
-# chilipie-kiosk
+# Wachalarm-Kiosk
 
-Easy-to-use **Raspberry Pi** image for booting directly into **full-screen Chrome**, with built-in convenience features for unattended operation. Perfect for **dashboards and build monitors**.
+Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry Pi**, mit dem der Wachalarm (oder eine andere Webseite) direkt im Vollbild z.B. auf einem Monitor anzeigt werden kann. 
 
-## Features
+## Beispielfoto
 
-![Screenshots](https://github.com/futurice/chilipie-kiosk/blob/master/docs/screenshot.png)
+![Wachalarm FF Elsterwerda](https://user-images.githubusercontent.com/19272095/89555705-ae166100-d810-11ea-99d6-089c08687a14.png)
 
+## Funktionen
+
+- **Startet unmittelbar im Vollbild** - Chromium Web-Browser mit allen wichtigen Funktionen
+- **Automatatische Sicherheitsupdates** - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
+- **Automatische Wiederherstellung** - bei Neustart oder Stromausfall startet das System im vorherigen Zustand eigenständig neu
+- *Optional:* **Stromsparfunktion** - mittels HDMI-CEC kann der Monitor ausgeschaltet werden, sofern kein Einsatz anliegt
+- **Maus wird ausgeblendet** - sofern eine Maus angeschlossen ist, wird diese nach inaktivität ausgeblendet
+
+## Inbetriebnahme
+
+1. Benötigt wird ein Raspberry Pi ([kompatible Hardware](#hardware)).
+2. [Aktuelles Image](https://github.com/Robert-112/Wachalarm-Kiosk/releases) herunterladen.
+3. Dateien entpacken.
+4. Image auf eine SD-Karate schreiben. Hierzu kann unter Windows die Anwendung [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) genutzt werden.
+6. [Webseite und weitere Optionen festlegen](#konfigurations-datei)
+7. *Optional*: automatische [WLAN-Verbindung](#wlan-setup) einstellen
+8. *Optional*: [feste IP-Adresse](#ip-adresse) hinterlegen
+9. SD-Karte in den Raspberry Pi einsetzen und starten.
+
+## Einstellungen
+
+### Konfigurations-Datei
+
+1. SD-Karte in einen PC einlgen (z.B. per USB-Adapter).
+2. Unter der Partition "Boot" der SD-Karte findet sich die Datei *[wachalarm_einstellungen.txt](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/home/wachalarm_einstellungen.txt)*.
+3. folgende Einstellungen können gesetzt werden:
+
+
+#### Webseite beim Start
+Webseite, die beim Start geöffnet werden soll, z.B. https://wachalarm.leitstelle-lausitz.de/waip/520101
 ```
-▲ Customizable, full screen        ▲ Boots directly into a simple     ▲ WiFi & other system config
-      startup graphics                  getting started -guide          is just one keypress away
+startup_url=https://wachalarm.leitstelle-lausitz.de/waip/520101
 ```
 
-- **Boots directly to full-screen Chrome** - with all the features of a modern browser
-- **No automatic updates** - no surprises due to Chrome (or other packages) suddenly updating
-- **Automatic crash-recovery** - accidental unpowering won't result in "Chrome did not shut down correctly :("
-- **Custom startup graphics** - displays [customizable graphics](home/background.png) instead of console messages during startup
-- **Lightweight window manager** - uses [Matchbox](https://www.yoctoproject.org/tools-resources/projects/matchbox) for minimal clutter and memory footprint
-- **HDMI output control** - ready-made scripts for [turning off the display](home/crontab.example) outside of office hours, for example
-- **Cursor hiding** - if you leave a mouse plugged in, the cursor is hidden after a brief period of inactivity
-- **Automatic reboots** - reboots the Pi nightly, when nobody's watching, to keep it running smoothly
-- **Based on a recent Debian** - if you want to add your own tweaks, all the expected packages are one `apt-get` away
-- **Batteries included** - the most common how-to's and ProTips have been collected to the [first-boot document](docs/first-boot.md)
+#### Standby aktivieren
+Automatisches Ausschalten des Bildschirms aktivieren, sofern kein Einsatz anliegt
 
-## Getting started
-
-1. Check that you have [compatible hardware](#hardware).
-2. Download the [latest image](https://github.com/futurice/chilipie-kiosk/releases).
-3. Decompress it.
-4. Flash the image onto your SD card. We recommend [Etcher](https://etcher.io/) for this: it's delightfully easy to use, cross platform, and will verify the result automatically. If you know what you're doing, you can of course also just `sudo dd bs=1m if=chilipie-kiosk-vX.Y.Z.img of=/dev/rdisk2`.
-5. *Optional*: [Set URL before boot](#set-url-before-boot)
-6. *Optional*: [Setup automatic WiFi](#automatic-wifi-setup)
-7. Insert the SD card to your Pi and power it up.
-8. You should land in the [first-boot document](docs/first-boot.md), for further instructions & ideas.
-
-### Set URL before boot
-
-1. After flashing remount your SD card.
-2. Create a *chilipie_url.txt* in your SD cards boot folder or */home/pi*.
-3. Write URL in **first** line of file.
-
-Note: You can user `${SERIAL}` to get Pi's serial number into URL.  
-
-### Automatic WiFi setup
-
-1. After flashing remount your SD card.
-2. Create a `wpa_supplicant.conf` in your SD cards boot folder
-3. Copy the [sample wpa_supplicant.conf](#sample-wpasupplicantconf) file into the boot folder on the SD card.
-4. Replace `WiFi-SSID` and `WiFi-PASSWORD` with your WiFi configuration.
-5. Optional: Set the country code to your country code e.g. `DE`.
-
-#### Sample wpa_supplicant.conf
+1 == an, 0 == aus
 ```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+standby_enable=1
+```
+
+#### Standby - Alarmmonitore-URL
+*(gilt nur wenn Standby aktiv)*
+
+URL zur auswahl der Alarmmonitore, z.B. https://wachalarm.leitstelle-lausitz.de/waip/ .
+
+Die URL ist notwendig damit das Standby-Signal per Websocket korrekt ausgewertet werden kann.
+(! dies ist nicht die URL des einzelnen Alarmmonitors !)
+```
+standby_waipurl=https://wachalarm.leitstelle-lausitz.de/waip
+```
+
+#### Standby - Wachennummer
+*(gilt nur wenn Standby aktiv)*
+
+Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. 520101 für CB FW Cottbus
+```
+standby_wachennr=520101
+```
+
+#### System-Statusmeldungen aktivieren
+Automatisches senden von Status-Meldungen des Systems aktivieren. 
+
+Es handelt sich um allgemeine Systeminforamtionen wie z.B. Kernel-Version, Hardwaremerkmale & Udpatestatus. Personenbezogene Daten werden nicht ermittelt.
+
+1 == an, 0 == aus
+```
+report_enable=1
+```
+
+#### System-Statusmeldungen - Status-URL
+*(gilt nur wenn System-Statusmeldungen aktiv)*
+
+URL an die Status-Meldungen durch das System gesendet werden.
+```
+report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
+```
+
+### WLAN Setup
+
+WLAN-Verbindungen lassen Sich beim Raspberry über eine spezielle Datei vorgeben.
+
+1. SD-Karte in PC einsetzen.
+2. In der Boot-Partition eine Datei mit dem Namen `wpa_supplicant.conf` erstellen.
+3. Eine fertige Vorlage findet sich hier: [wpa_supplicant.conf](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config/wpa_supplicant.conf) 
+4. Ersetzen Sie `Name-des-WLANs` und `ganz-geheimes-kennwort` mit Ihren eigenen WLAN-Einstellungen.
+5. Datei speichern und SD-Karte wieder in den Raspberry Pi einsetzen. Er sollte sich jetzt eigenständig mit dem WLAN verbinden.
+
+#### Beispiel wpa_supplicant.conf für WLAN _mit Kennwort_
+```
+country=DE
 update_config=1
-country=US
-
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 network={
-  ssid="WiFi-SSID"
-  psk="WiFi-PASSWORD"
   key_mgmt=WPA-PSK
+  ssid="Name-des-WLANs"
+  psk="ganz-geheimes-kennwort"
 }
 ```
 
+#### Beispiel wpa_supplicant.conf für WLAN _ohne Kennwort_
+```
+country=DE
+update_config=1
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+network={
+   ssid="Name-des-WLANs"
+   key_mgmt=NONE
+}
+```
+
+### IP-Adresse
+
+Mittels der Datei `cmdline.txt` kann direkt eine feste IP-Adresse für den Raspberry vorgegeben werden.
+
+1. SD-Karte in PC einsetzen.
+2. In der Boot-Partition die Datei `cmdline.txt` finden und mit einem Editor öffnen.
+3. Am ende der ersten Zeile folgenden Text hinzufügen (keine neue Ziele):
+
+```ip=192.168.2.20::192.168.2.1:255.255.255.0:wachalarm:eth0:off:192.168.2.1```
+
+Damit wird die IP-Adresse für die Schnittstelle `eth0` auf 192.168.2.20 festlegt. Einstellungen für das Gateway (`192.168.2.1`), das Subnetz (`255.255.255.0`), den Hostnamen (`wachalarm`) und den DNS-Server (`192.168.2.1`) werden ebenfalls definiert.
+
+Bereits angepasste `cmdline.txt`-Dateien finden Sie hier: [optional_boot_config](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config) 
+
 ## Hardware
 
-Works with [all Raspberry Pi versions](https://www.raspberrypi.org/products/). Versions 3 and 4 are recommended, though, since the smaller ones can be a bit underpowered for rendering complex dashboards. The 3 and 4 also come with built-in WiFi, which is convenient (though both [official](https://www.raspberrypi.org/products/raspberry-pi-usb-wifi-dongle/) and [off-the-shelf](https://elinux.org/RPi_USB_Wi-Fi_Adapters) USB WiFi dongles can work equally well).
+Dieses Image sollte mit allen [Raspberry Pi's](https://www.raspberrypi.org/products/) funktionieren. Die Versionen 3 und 4 werden empfohlen, weil die kleinen Varianten zu wenig Leistung bieten. 3 und 4 haben zudem ein eingebautes WLAN-Modul.
 
-Make sure you have a [compatible 4+ GB SD card](http://elinux.org/RPi_SD_cards). In general, any Class 10 card will work, as they're fast enough and of high enough quality.
+Stellen Sie sicher, dass Sie eine [kompatible SD-Karte](http://elinux.org/RPi_SD_cards) verwenden (mind. 4 GB). `Class 10`-Karten sollten in jedem Fall funktionieren.
 
-The Pi needs a [2.5 Amp power source](https://www.raspberrypi.org/documentation/hardware/raspberrypi/power/README.md). Most modern USB chargers you'll have laying around will work, but an older/cheaper one may not.
+Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/documentation/hardware/raspberrypi/power/README.md). 
 
-## Common issues
+## Bekannte Fehler
 
-- **I get a kernel panic on boot, or the image keeps crashing.** The Raspberry Pi is somewhat picky about about its SD cards. It's also possible the SD card has a bad sector in a critical place, and `dd` wasn't be able to tell you. Double-check that you're using [a blessed SD card](http://elinux.org/RPi_SD_cards), and try flashing the image again.
-- **I see a "rainbow square" or "yellow lightning" in the top right corner of the screen, and the device seems unstable.** This usually means the Pi isn't getting enough amps from your power supply. This is sometimes the case in more exotic setups (e.g. using the USB port of your display to power the Pi) or with cheap power supplies. Try another one.
-- **The [display control scripts](home/display-on.sh) don't turn off the display device.** Normal PC displays will usually power down when you cut off the signal, but this is not the case for many TV's. Please check if your TV has an option in its settings for enabling this, as some do. If not, you can [try your luck with HDMI CEC signals](http://raspberrypi.stackexchange.com/questions/9142/commands-for-using-cec-client), but the TV implementations of the spec are notoriously spotty.
-- **The MicroSD card isn't flashing correctly, I don't see the boot partition.** This commonly happens on Windows computers and can be fixed by extracting the `chilipie*.img` file from the `tar.gz`. You will need to use an extraction tool that supports both gzip and tar archive formats, such as 7zip. Extract the contents of the `img.tar.gz` file, then extract the contents of the resulting `img.tar` file again. You should be left with an `.img` file, which you can then use with Etcher to flash your SD card.
+### Kein Ton über HDMI (Raspberry Pi 4)
+- stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
+- prüfen Sie ob der Monitor / Fernseher über den angeschlossenen HDMI-Port auch wirklich einen Ton ausgegeben kann
+- prüfen Sie mittels `sudo raspi-config` ob HDMI als Audio-Ausgabequelle eingestellt wurde
 
-## Acknowledgements
+### ich benötige ein anderes Kennwort
+- öffnen Sie die Eingabekonsole
+- `sudo raspi-config`
+- Navigieren Sie zu `Change User Password`
+- geben Sie ein neues Passwort ein und bestätigen Sie es
+- das eingegebene Kennwort gilt für den Benutzer `pi`
 
-This project is a grateful recipient of [Futurice Open Source sponsorship](http://futurice.com/blog/sponsoring-free-time-open-source-activities). Thank you. 🙇
+## Sonstiges
+
+Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
