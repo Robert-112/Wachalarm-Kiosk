@@ -20,9 +20,10 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 2. [Aktuelles Image](https://github.com/Robert-112/Wachalarm-Kiosk/releases) herunterladen.
 3. Dateien entpacken.
 4. Image auf eine SD-Karate schreiben. Hierzu kann unter Windows die Anwendung [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) genutzt werden.
-6. [Webseite und weitere Optionen festlegen](#konfigurations-datei)
-7. *Optional*: automatische [WLAN-Verbindung](#wlan-setup) einstellen
-8. *Optional*: [feste IP-Adresse](#ip-adresse) hinterlegen
+5. [Webseite und weitere Optionen festlegen](#konfigurations-datei)
+6. *optional*: automatische [WLAN-Verbindung](#wlan-setup) einstellen
+7. *optional*: [feste IP-Adresse](#ip-adresse) hinterlegen
+8. *optional*: [Passwort](#passwort-ändern) für den Benutzer `pi` ändern
 9. SD-Karte in den Raspberry Pi einsetzen und starten.
 
 ## Einstellungen
@@ -118,19 +119,36 @@ network={
 }
 ```
 
-### IP-Adresse
+## Standardeinstellungen per Script anpassen
 
-Mittels der Datei `cmdline.txt` kann direkt eine feste IP-Adresse für den Raspberry vorgegeben werden.
+Mittels Anpassung der Datei `cmdline.txt` kann beim Start des Raspberry ein Script ausgeführt werden werden.
+Über dieses Script können verschiedene Einstellungen individuell angepasst werden.
 
 1. SD-Karte in PC einsetzen.
 2. In der Boot-Partition die Datei `cmdline.txt` finden und mit einem Editor öffnen.
-3. Am ende der ersten Zeile folgenden Text hinzufügen (keine neue Ziele):
+3. Am ende der ersten Zeile ein Leerzeichen und folgenden Text hinzufügen (keine neue Ziele):
 
-```ip=192.168.2.20::192.168.2.1:255.255.255.0:wachalarm:eth0:off:192.168.2.1```
+```systemd.run=/boot/firstrun.sh systemd.run_success_action=reboot systemd.unit=kernel-command-line.target```
 
-Damit wird die IP-Adresse für die Schnittstelle `eth0` auf 192.168.2.20 festlegt. Einstellungen für das Gateway (`192.168.2.1`), das Subnetz (`255.255.255.0`), den Hostnamen (`wachalarm`) und den DNS-Server (`192.168.2.1`) werden ebenfalls definiert.
+(eine bereits angepasste `cmdline.txt`-Dateien finden Sie hier: [optional_boot_config](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config))
 
-Bereits angepasste `cmdline.txt`-Dateien finden Sie hier: [optional_boot_config](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config) 
+Die Änderung der `cmdline.txt` führt dazu, dass beim nächsten Start das Script `/boot/firstrun.sh` einmalig ausgeführt wird. Nach Ausführung entfernt sich das Script selbstständig aus dem Ordner `/boot/` und auch die Anpassung der `cmdline.txt` wird wieder rückgängig gemacht. 
+
+### IP-Adresse
+
+Über das Script `firstrun.sh` lässt sich die Datei `/etc/dhcpcd.conf` so bearbeiten, dass die IP-Adresse für LAN und/oder WLAN fest hinterlegt werden.
+
+Ein Beispiel in dem die Netzwerk-Adpater `eth0` und `wlan0` angepasst werden finden sie hier: [firstrun.sh](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config/firstrun.sh)
+
+### Passwort ändern
+
+Mit dem Script `firstrun.sh` lässt sich auch das Passwort des Benutzers `pi` ändern.
+Dies erfolgt über nachfolgenden Aufruf:
+
+```echo "pi:ganz_geheim" | sudo chpasswd```
+
+Damit wird der Befehl `chpasswd` ausgeführt und für den Benutzer `pi` als neues Passwort `ganz_geheim` festgelegt.
+Ein Beispiel finden sie hier: [firstrun.sh](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config/firstrun.sh)
 
 ## Hardware
 
@@ -146,6 +164,7 @@ Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/
 - stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
 - prüfen Sie ob der Monitor / Fernseher über den angeschlossenen HDMI-Port auch wirklich einen Ton ausgegeben kann
 - prüfen Sie mittels `sudo raspi-config` ob HDMI als Audio-Ausgabequelle eingestellt wurde
+- mit dem Befehlt `speaker-test` lässt sich die Sound-Ausgabe über die Konsole prüfen (Aufruf der Konsole muss am angeschlossenen Monitor erfolgen, nicht remote per SSH)
 
 ### ich benötige ein anderes Kennwort
 - öffnen Sie die Eingabekonsole
