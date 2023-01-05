@@ -88,6 +88,8 @@ report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
 
 ### WLAN Setup
 
+#### Variante 1 - Datei wpa_supplicant.conf
+
 WLAN-Verbindungen lassen Sich beim Raspberry über eine spezielle Datei vorgeben.
 
 1. SD-Karte in PC einsetzen.
@@ -95,6 +97,21 @@ WLAN-Verbindungen lassen Sich beim Raspberry über eine spezielle Datei vorgeben
 3. Eine fertige Vorlage findet sich hier: [wpa_supplicant.conf](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config/wpa_supplicant.conf) 
 4. Ersetzen Sie `Name-des-WLANs` und `ganz-geheimes-kennwort` mit Ihren eigenen WLAN-Einstellungen.
 5. Datei speichern und SD-Karte wieder in den Raspberry Pi einsetzen. Er sollte sich jetzt eigenständig mit dem WLAN verbinden.
+
+#### Variante 2 - raspi-config
+
+Alternativ lässt sich das WLAN auch direkt am Raspberry einrichten. 
+
+1. Hierzu diesen starten und warten bis er vollständig hochgefahren ist (ggf. Monitor wieder einschalten, falls automatisch ausgeschaltet).
+2. Mittels der Tastenkombination `STRG` + `ALT` + `F2` in die Konsole wechseln
+3. Anmelden (Standardbenutzer: `pi`; Standardkennwort: `wachalarm` (beides kann bei Ihnen anders lauten))
+4. Es öffnet sich eine blaue Oberfläche (lässt sich alternativ mit dem Befehl `sudo raspi-config` starten)
+5. `1 System Options` öffnen
+6. `S1 Wireless LAN` auswählen
+7. SSID des WLANs eingeben
+8. Kennwort des WLANs eingeben
+9. im Anschluss mit `Finish` die Oberfläche verlassen
+10. Raspberry Pi neustarten (Strom aus/ein, oder `sudo reboot`)
 
 #### Beispiel wpa_supplicant.conf für WLAN _mit Kennwort_
 ```
