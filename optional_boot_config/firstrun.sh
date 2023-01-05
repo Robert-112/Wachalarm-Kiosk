@@ -43,14 +43,20 @@ slaac private
 
 # static IP configuration:
 
+interface eth0
+static ip_address=192.168.1.20/24
+static routers=192.168.1.1
+static domain_name_servers=192.168.1.1
+
 interface wlan0
 static ip_address=192.168.179.123/24
 static routers=192.168.179.8
 static domain_name_servers=1.1.1.1
 
 DHCPCDEOF
-rm -f /boot/firstrun.sh
-sed -i 's| systemd.run.*||g' /boot/cmdline.txt
 # Passwort des Benutzers pi aendern
 echo "pi:ganz_geheim" | sudo chpasswd
+# Script loeschen und cmdline.txt zuruecksetzen
+rm -f /boot/firstrun.sh
+sed -i 's| systemd.run.*||g' /boot/cmdline.txt
 exit 0
