@@ -16,10 +16,18 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 
 ## Inbetriebnahme
 
+### Schnellstart
+
+1. [Image](https://github.com/Robert-112/Wachalarm-Kiosk/releases) herunterladen und auf SD-Karte schreiben
+2. Datei [wachalarm_einstellungen.txt](#konfigurations-datei) anpassen
+3. SD-Karte einsetzen, Raspberry Pi an Monitor anschließen und starten
+
+### ausführliche Anleitung
+
 1. Benötigt wird ein Raspberry Pi ([kompatible Hardware](#hardware)).
 2. [Aktuelles Image](https://github.com/Robert-112/Wachalarm-Kiosk/releases) herunterladen.
 3. Dateien entpacken.
-4. Image auf eine SD-Karate schreiben. Hierzu kann unter Windows die Anwendung [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) genutzt werden.
+4. Image auf eine SD-Karte schreiben. Hierzu kann unter Windows die Anwendung [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) genutzt werden.
 5. [Webseite und weitere Optionen festlegen](#konfigurations-datei)
 6. *optional*: automatische [WLAN-Verbindung](#wlan-setup) einstellen
 7. *optional*: [feste IP-Adresse](#ip-adresse) hinterlegen
