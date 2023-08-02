@@ -25,7 +25,7 @@ socket.on('connect_error', (err) => {
 
 socket.on('io.new_waip', function () {
   console.log('AN - Display einschalten');
-  var yourscript = exec('~/cec-on.sh', (error, stdout, stderr) => {
+  var yourscript = exec('~/screen-on.sh', (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (error !== null) {
@@ -36,7 +36,7 @@ socket.on('io.new_waip', function () {
 
 socket.on('io.standby', function () {
   console.log('AUS - Display ausschalten');
-  var yourscript = exec('~/cec-off.sh', (error, stdout, stderr) => {
+  var yourscript = exec('~/screen-off.sh', (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (error !== null) {
