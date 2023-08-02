@@ -24,6 +24,9 @@ jspm_packages/
 _old/
 _intern/
 
+# editor
+.editorconfig
+
 # ssl
 .crt
 .key

@@ -19,8 +19,8 @@ DISPLAY=:0.0
 
 10 * * * * ~/report_system.sh >/dev/null 2>&1
 
-# Reboot the Pi every night at 3 AM to ensure smooth operation
-# 0 3 * * * sudo reboot
+# Neustart des Raspberry Pi jeden Donnerstag um 3:30 Uhr
+30 3 * * 4 sudo reboot
 
 # Example: Turn display on weekdays at 7 AM
 # Note: You may exchange "display-on" / "display-off" with "cec-on" / "cec-off" in order to use HDMI CEC

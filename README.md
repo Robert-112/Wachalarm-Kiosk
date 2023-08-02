@@ -154,6 +154,15 @@ Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/
 - geben Sie ein neues Passwort ein und bestätigen Sie es
 - das eingegebene Kennwort gilt für den Benutzer `pi`
 
+### Stromsparmodus bei einem PC-Monitor
+- Wenn statt eines HDMI-CEC-TV-Monitors z.B. ein ganz normaler PC-Monitor verwendet wird (angeschlossen per HDMI oder DVI), dann wird dieser standardmäßig nicht automatisch in den Standby-Modus gehen.
+- Dann kann versucht werden, die Skripte zum Ausschalten des Monitors anzupassen.
+- Mit der bereits angepassten Dateien `cmdline.txt` und `firstrun_v2.sh` (nach Download umbennen in `firstrun.sh`) werden die Standby-Befehle geändert.
+- es werden die `display-off.sh` und `display-on.sh` aktiviert.
+- Außerdem lässt sich der Monitor dann mit folgenden Tastenkombinationen steuern
+  - `STRG` + `i` -> schaltet den Monitor ein
+  - `STRG` + `o` -> schaltet den Monitor aus
+
 ## Sonstiges
 
 Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
