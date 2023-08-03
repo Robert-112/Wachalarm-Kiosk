@@ -10,7 +10,7 @@ fi
 
 #Standby-Script ausfuehren
 if [[ "$standby_enable" == *"1"* ]]; then
-    xmessage -center -timeout 9 "ACHTUNG: Monitor geht gleich in Standby, sofern kein Einsatz anliegt."
+    xmessage -center -timeout 9 -font -adobe-*-*-r-*--100-100-*-*-p-*-*-* -center -bg orange -file ~/standby_message.txt
     sleep 1
     (cd /home/pi && npm run start --waipurl=$standby_waipurl --wachennr=$standby_wachennr &)
 fi
