@@ -26,7 +26,7 @@ function ssh {
   /usr/bin/ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout="$SSH_CONNECT_TIMEOUT" "pi@$IP" "$1"
 }
 function scp {
-  /usr/bin/scp -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$@" "pi@$IP:/home/pi"
+  /usr/bin/scp -r -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$@" "pi@$IP:/home/pi"
 }
 
 question "Skript zum erstellen eines aktuellen Raspberry-Images fuer einen Wachalarm-Monitor"
@@ -73,7 +73,7 @@ cp -v "$BOOT_CMDLINE_TXT" "$BOOT_CMDLINE_TXT.backup"
 cp -v "$BOOT_CONFIG_TXT" "$BOOT_CONFIG_TXT.backup"
 
 working "Wachalarm-Einstellungsdatei hinterlegen"
-cp -v "homefolder_content/wachalarm_einstellungen.txt" "$MOUNTED_BOOT_VOLUME/wachalarm_einstellungen.txt"
+cp -v "home/wachalarm_einstellungen.txt" "$MOUNTED_BOOT_VOLUME/wachalarm_einstellungen.txt"
 
 working "Automatische Expansion der root-Partition deaktivieren"
 echo "Updating: $BOOT_CMDLINE_TXT"
@@ -155,7 +155,7 @@ ssh "rm -rfv /home/pi/*"
 scp $(find home -type f)
 
 working "Skripts ausfuehrbar machen"
-ssh "chmod +x display-off.sh && chmod +x display-on.sh && chmod +x cec-off.sh && chmod +x cec-on.sh && chmod +x .xsession && chmod +x start_waip_standby.sh && chmod +x start_mouse_click.sh && chmod +x report_status.sh"
+ssh "chmod +x *.sh && chmod +x .xsession"
 
 working "Setting splash screen background"
 ssh "sudo rm /usr/share/plymouth/themes/pix/splash.png && sudo ln -s /home/pi/background.png /usr/share/plymouth/themes/pix/splash.png"
@@ -198,6 +198,9 @@ echo "  * F11 to exit full screen"
 echo "  * Alt + F, then S to go to Settings"
 echo "  * Type \"continue\" to filter the options"
 echo "  * Tab to select \"Continue where you left off\""
+echo "  * (or in German \"Zuletzt angesehene Seite oeffnen\")"
+echo "  * "
+echo "* Alle Tabs schließen und Raspberry neu Starten"
 echo "(press enter when ready)"
 read
 
