@@ -25,9 +25,6 @@ function question {
 function ssh {
   /usr/bin/ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout="$SSH_CONNECT_TIMEOUT" "pi@$IP" "$1"
 }
-function scp {
-  /usr/bin/scp -r -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$@" "pi@$IP:/home/pi"
-}
 
 question "Skript zum erstellen eines aktuellen Raspberry-Images fuer einen Wachalarm-Monitor"
 echo "Benoetigt:"
@@ -152,7 +149,9 @@ ssh "sudo apt-get update && sudo apt-get -y upgrade && DEBIAN_FRONTEND=nonintera
 
 working "Setting home directory default content"
 ssh "rm -rfv /home/pi/*"
-scp $(find home -type f)
+/usr/bin/scp -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$(find home -type f)" "pi@$IP:/home/pi"
+ssh "mkdir /home/pi/.matchbox"
+/usr/bin/scp -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "/home/pi/.matchbox/kbdconfig" "pi@$IP:/home/pi/.matchbox/"
 
 working "Skripts ausfuehrbar machen"
 ssh "chmod +x *.sh && chmod +x .xsession"
@@ -208,8 +207,9 @@ read
 
 # weitere Einstellungen
 
+# remove all known wifis
+
 # sudo raspi-config -> System -> Audio auf HDMI ändern
-# vnc-fenster schließen
 # image shrink
 
 # TV
