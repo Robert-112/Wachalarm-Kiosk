@@ -86,9 +86,8 @@ echo "Updating: $BOOT_CONFIG_TXT"
 perl -i -p0e "s/#disable_overscan=1/disable_overscan=1/g" "$BOOT_CONFIG_TXT" # "perl" is more cross-platform than "sed -i"
 echo -e "\ndisable_splash=1" >> "$BOOT_CONFIG_TXT"
 
-#2023-08 dtparam=audio=on aktiviert lassen 
-#working "Sound auf HDMI aktiveren (klappt nicht immer)"
-#perl -i -p0e "s/dtparam=audio=on/#dtparam=audio=on/g" "$BOOT_CONFIG_TXT"
+working "Sound auf HDMI aktiveren (klappt nicht immer)"
+perl -i -p0e "s/dtparam=audio=on/#dtparam=audio=on/g" "$BOOT_CONFIG_TXT"
 
 #working "Making boot quieter (part 2)" # https://scribles.net/customizing-boot-up-screen-on-raspberry-pi/
 #echo "You may want to revert these changes if you ever need to debug the startup process"
