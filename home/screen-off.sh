@@ -10,7 +10,6 @@ echo "$screen_type";
 if [[ $screen_type == *"m"* ]]; then
     echo "display off";
     xrandr --output HDMI-1 --off
-    xrandr --output HDMI-2 --off
     #veraltete Variante
     #sudo vcgencmd display_power 0 > /dev/null
 elif [[ $screen_type == *"t"* ]]; then

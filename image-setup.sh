@@ -145,12 +145,14 @@ ssh "touch .hushlogin" # https://scribles.net/silent-boot-on-raspbian-stretch-in
 ssh "sudo perl -i -p0e 's#--autologin pi#--skip-login --noissue --login-options \"-f pi\"#g' /etc/systemd/system/getty@tty1.service.d/autologin.conf" # "perl" is more cross-platform than "sed -i"
 
 working "Installing packages"
-ssh "sudo apt-get update && sudo apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y vim matchbox-window-manager unclutter mailutils nitrogen jq chromium-browser xserver-xorg xinit rpd-plym-splash xdotool rng-tools xinput-calibrator cec-utils realvnc-vnc-server unattended-upgrades npm nodejs lshw xfonts-encodings"
+ssh "sudo apt-get update && sudo apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y vim matchbox-window-manager unclutter mailutils nitrogen jq chromium-browser xserver-xorg xinit rpd-plym-splash xdotool rng-tools xinput-calibrator cec-utils realvnc-vnc-server unattended-upgrades npm nodejs lshw xfonts-100dpi"
 # We install mailutils just so that you can check "mail" for cronjob output
 
 working "Setting home directory default content"
 scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -rp "home" "pi@$IP:/home/pi/"
 ssh "mv /home/pi/home/* /home/pi/"
+ssh "mv /home/pi/home/.bash_profile /home/pi/"
+ssh "mv /home/pi/home/.xsession /home/pi/"
 ssh "mv /home/pi/home/.matchbox* /home/pi/"
 ssh "rm -r /home/pi/home"
 

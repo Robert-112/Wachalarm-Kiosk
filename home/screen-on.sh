@@ -10,7 +10,6 @@ echo "$screen_type";
 if [[ "$screen_type" == *"m"* ]]; then
     echo "display on";
     xrandr --output HDMI-1 --auto
-    xrandr --output HDMI-2 --auto
     #veraltete Variante
     #sudo vcgencmd display_power 1 > /dev/null
 elif [[ "$screen_type" == *"t"* ]]; then 

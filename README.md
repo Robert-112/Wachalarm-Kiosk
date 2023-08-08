@@ -230,8 +230,13 @@ Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Taste
 - geben Sie ein neues Passwort ein und bestätigen Sie es
 - das eingegebene Kennwort gilt für den Benutzer `pi`
 
+### Monitor geht nicht in Standby
+- stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
+- prüfen Sie ob in den [Standby-Einstellungen zur Art des Monitors](#standby---art-des-monitors-festlegen) der richtige Monitor-Typ hinterlegt wurde
+- prüfen Sie ob in den [Standby-Einstellungen zur Wachennummer](#standby---wachennummer) die richtige Wachennummer hinterlegt wurde
+
 ### Monitor / Fernseher aus Standby erwecken
-- Wenn die Standby-Funktion aktiviert wurde, schaltet sich der angeschlossene Monitor oder Fernseher aus, solange kein Alarm angezeigt wird
+- wenn die Standby-Funktion aktiviert wurde, schaltet sich der angeschlossene Monitor oder Fernseher aus, solange kein Alarm angezeigt wird
 - mit der beschriebenen [Tastenkombination](#tastenkombinationen) `STRG` + `i` können Sie den Monitor wieder einschalten
 
 ---

@@ -10,7 +10,7 @@ fi
 
 #Standby-Script ausfuehren
 if [[ "$standby_enable" == *"1"* ]]; then
-    xmessage -center -timeout 9 -font -adobe-*-*-r-*--100-100-*-*-p-*-*-* -bg orange -file ~/xmessage_standby.txt
+    xmessage -center -timeout 9 -font -adobe-*-*-r-*--100-100-*-*-p-*-*-* -bg orange -buttons x:1 -file /home/pi/xmessage_standby.txt
     sleep 1
     (cd /home/pi && npm run start --waipurl=$standby_waipurl --wachennr=$standby_wachennr &)
 fi
