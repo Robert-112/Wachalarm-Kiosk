@@ -27,4 +27,4 @@ report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
 #
 #
 # Neustarteinstellungen, "0" == inaktiv, "w" == Mo 3:00, "z" == Di & Fr 3:00, "t" == immer 3:00
-restart_type=0
+restart_type=w

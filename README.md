@@ -72,7 +72,7 @@ Legt fest, was für ein Monitor verwendet wird. Je nach Typ (PC-Monitor oder Fer
 
 Es gibt folgende Optionen:
 - t = Typ "TV", nutzt [CEC-Befehle](https://de.wikipedia.org/wiki/Consumer_Electronics_Control) um den Fernseher ein- oder auszuschalten
-- m = Typ "Monitor", nutzt den Befehlssatz `vcgencmd display_power` um einen PC-Monitor ein- oder auszuschalten
+- m = Typ "Monitor", nutzt den Befehlssatz `xrandr --output HDMI-*` um einen PC-Monitor ein- oder auszuschalten
 
 ```
 screen_type=t
@@ -81,7 +81,7 @@ screen_type=t
 #### Standby - Websocket-URL
 *(gilt nur wenn die Standby-Funktion aktiviert wurde)*
 
-Dieser Wert sollte normalerweise nicht geändert werden. Es handelt sich um die URL des Wachalarm-Servers, über welche die Websocket-Befehle empfangen und verarbeitet werden. Nur mit dieser URL kann das Standby-Signal korrekt ausgewertet werden.
+Dieser Wert sollte normalerweise nicht geändert werden. Es handelt sich um die URL des Wachalarm-Servers, über welche Websocket-Befehle empfangen und verarbeitet werden. Nur mit dieser URL kann das Standby-Signal korrekt ausgewertet werden.
 
 
 ```
@@ -204,31 +204,47 @@ Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/
 
 ---
 
+## Tastenkombinationen
+
+Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Tastenkombination zur Verfügung:
+- `STRG` + `i` -> schaltet den Monitor ein (I)
+- `STRG` + `o` -> schaltet den Monitor aus (O)
+- `STRG` + `ALT` + `r` -> startet den Raspberry Pi neu (`reboot`)
+- `STRG` + `ALT` + `F1` -> wechselt zum Webbrowser (Standardansicht ohne Login)
+- `STRG` + `ALT` + `F2` -> wechselt zum Konfigutaions-Programm des Raspberry pi (Login notwendig, startet `sudo raspi-config`) 
+- `STRG` + `ALT` + `F3` -> wechselt zur Konsole (Login notwendig, Eingabekonsole für Wartung)
+
+---
+
 ## Bekannte Fehler
 
 ### kein Ton über HDMI (Raspberry Pi 4)
 - stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
 - prüfen Sie ob der Monitor / Fernseher über den angeschlossenen HDMI-Port auch wirklich einen Ton ausgegeben kann
-- prüfen Sie mittels `sudo raspi-config` ob HDMI als Audio-Ausgabequelle eingestellt wurde
+- wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F2` (Login notwendig) in die Konfigurationsoberfläche des Raspberrys und prüfen Sie ob HDMI als Audio-Ausgabequelle eingestellt wurde
+- wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F3` (Login notwendig) in die Wartungskonsole und prüfen Sie mit dem Befehl `speaker-test` ob ein Test-Ton ausgegeben wird
 
 ### ich benötige ein anderes Kennwort
-- öffnen Sie die Eingabekonsole am Raspberry Pi
-- `sudo raspi-config`
+- wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F2` (Login notwendig) in die Konfigurationsoberfläche des Raspberrys
 - Navigieren Sie zu `Change User Password`
 - geben Sie ein neues Passwort ein und bestätigen Sie es
 - das eingegebene Kennwort gilt für den Benutzer `pi`
 
 ### Monitor / Fernseher aus Standby erwecken
-
 - Wenn die Standby-Funktion aktiviert wurde, schaltet sich der angeschlossene Monitor oder Fernseher aus, solange kein Alarm angezeigt wird
-- Mit einer Tastutur kann der Monitor durch folgende Tastenkombinationen ein- und ausgeschaltet werden:
-  - `STRG` + `i` -> schaltet den Monitor ein
-  - `STRG` + `o` -> schaltet den Monitor aus
+- mit der beschriebenen [Tastenkombination](#tastenkombinationen) `STRG` + `i` können Sie den Monitor wieder einschalten
+
+---
 
 ## Sonstiges
 
-- Mit dem Skript `image-setup.sh` kann eigenständig ein aktuelles Image für den Raspberry Pi erstellt werden. Benötigt wird ein PC mit aktuellem Linux (z.B. Ubuntu, oder zweiter Raspberry Pi) 
-  Das Skript selbst liefert alle notwendigen Informationen. 
-  Der Linux-PC auf dem das Skript ausgeführt wird (`chmod +x image-setup.sh` und dann `./image-setup.sh`) und der Raspberry Pi welcher konfiguriert werden soll, müssen sich im Netzwerk erreichen können.
-- Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
+### Image-Erstellung
+Mit dem Skript `image-setup.sh` kann eigenständig ein aktuelles Image für den Raspberry Pi erstellt werden. Benötigt wird ein PC mit aktuellem Linux (z.B. Ubuntu, oder zweiter Raspberry Pi).
+
+Das Skript selbst liefert alle notwendigen Informationen. 
+
+Der Linux-PC auf dem das Skript ausgeführt wird (`chmod +x image-setup.sh` und dann `./image-setup.sh`) und der Raspberry Pi welcher konfiguriert werden soll, müssen sich im Netzwerk erreichen können.
+
+### Fork
+Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
 
