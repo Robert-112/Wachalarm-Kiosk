@@ -1,2 +1,3 @@
 <ctrl>o=!/home/pi/screen-off.sh
 <ctrl>i=!/home/pi/screen-on.sh
+<ctrl><alt><r>=!/home/pi/reboot.sh now

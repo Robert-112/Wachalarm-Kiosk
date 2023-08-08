@@ -86,8 +86,9 @@ echo "Updating: $BOOT_CONFIG_TXT"
 perl -i -p0e "s/#disable_overscan=1/disable_overscan=1/g" "$BOOT_CONFIG_TXT" # "perl" is more cross-platform than "sed -i"
 echo -e "\ndisable_splash=1" >> "$BOOT_CONFIG_TXT"
 
-working "Sound auf HDMI aktiveren (klappt nicht immer)"
-perl -i -p0e "s/dtparam=audio=on/#dtparam=audio=on/g" "$BOOT_CONFIG_TXT"
+#2023-08 dtparam=audio=on aktiviert lassen 
+#working "Sound auf HDMI aktiveren (klappt nicht immer)"
+#perl -i -p0e "s/dtparam=audio=on/#dtparam=audio=on/g" "$BOOT_CONFIG_TXT"
 
 #working "Making boot quieter (part 2)" # https://scribles.net/customizing-boot-up-screen-on-raspberry-pi/
 #echo "You may want to revert these changes if you ever need to debug the startup process"
@@ -144,14 +145,14 @@ ssh "touch .hushlogin" # https://scribles.net/silent-boot-on-raspbian-stretch-in
 ssh "sudo perl -i -p0e 's#--autologin pi#--skip-login --noissue --login-options \"-f pi\"#g' /etc/systemd/system/getty@tty1.service.d/autologin.conf" # "perl" is more cross-platform than "sed -i"
 
 working "Installing packages"
-ssh "sudo apt-get update && sudo apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y vim matchbox-window-manager unclutter mailutils nitrogen jq chromium-browser xserver-xorg xinit rpd-plym-splash xdotool rng-tools xinput-calibrator cec-utils realvnc-vnc-server unattended-upgrades npm nodejs lshw"
+ssh "sudo apt-get update && sudo apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y vim matchbox-window-manager unclutter mailutils nitrogen jq chromium-browser xserver-xorg xinit rpd-plym-splash xdotool rng-tools xinput-calibrator cec-utils realvnc-vnc-server unattended-upgrades npm nodejs lshw xfonts-encodings"
 # We install mailutils just so that you can check "mail" for cronjob output
 
 working "Setting home directory default content"
-ssh "rm -rfv /home/pi/*"
-/usr/bin/scp -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$(find home -type f)" "pi@$IP:/home/pi"
-ssh "mkdir /home/pi/.matchbox"
-/usr/bin/scp -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "/home/pi/.matchbox/kbdconfig" "pi@$IP:/home/pi/.matchbox/"
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -rp "home" "pi@$IP:/home/pi/"
+ssh "mv /home/pi/home/* /home/pi/"
+ssh "mv /home/pi/home/.matchbox* /home/pi/"
+ssh "rm -r /home/pi/home"
 
 working "Skripts ausfuehrbar machen"
 ssh "chmod +x *.sh && chmod +x .xsession"

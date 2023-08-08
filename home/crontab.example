@@ -15,12 +15,12 @@ DISPLAY=:0.0
 @reboot sleep 55 && ~/start_mouse_click.sh >/dev/null 2>&1
 @reboot sleep 60 && ~/start_waip_standby.sh >/dev/null 2>&1
 
-# Statusmeldung alle 10 Minuten
+# Statusmeldung alle 30 Minuten
 
-10 * * * * ~/report_system.sh >/dev/null 2>&1
+*/30 * * * * ~/report_system.sh >/dev/null 2>&1
 
 # Neustart-Skript jeden Tag um 3:00 Uhr ausfuehren (pruefung erfolgt im Skript)
-0 3 * * * sudo ~/reboot.sh
+0 3 * * * sudo ~/reboot.sh >/dev/null 2>&1
 
 # Example: Turn display on weekdays at 7 AM
 # Note: You may exchange "display-on" / "display-off" with "cec-on" / "cec-off" in order to use HDMI CEC

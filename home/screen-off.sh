@@ -9,7 +9,10 @@ echo "$screen_type";
 
 if [[ $screen_type == *"m"* ]]; then
     echo "display off";
-    sudo vcgencmd display_power 0 > /dev/null
+    xrandr --output HDMI-1 --off
+    xrandr --output HDMI-2 --off
+    #veraltete Variante
+    #sudo vcgencmd display_power 0 > /dev/null
 elif [[ $screen_type == *"t"* ]]; then
     echo "hdmi off";
     echo 'standby 0' | cec-client -s > /dev/null

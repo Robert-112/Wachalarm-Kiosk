@@ -1,4 +1,0 @@
-ACHTUNG: 
-
-Monitor geht gleich in Standby,
-sofern kein Einsatz anliegt.

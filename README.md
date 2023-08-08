@@ -227,4 +227,8 @@ Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/
 
 ## Sonstiges
 
-Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
+- Mit dem Skript `image-setup.sh` kann eigenständig ein aktuelles Image für den Raspberry Pi erstellt werden. Benötigt wird ein PC mit aktuellem Linux (z.B. Ubuntu, oder zweiter Raspberry Pi) 
+  Das Skript selbst liefert alle notwendigen Informationen. 
+  Der Linux-PC auf dem das Skript ausgeführt wird (`chmod +x image-setup.sh` und dann `./image-setup.sh`) und der Raspberry Pi welcher konfiguriert werden soll, müssen sich im Netzwerk erreichen können.
+- Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
+
