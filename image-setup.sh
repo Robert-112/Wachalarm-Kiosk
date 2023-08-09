@@ -192,17 +192,9 @@ do
   sleep 1
 done
 
-question "Sobald der Pi mit Chromium neugestartet hat:"
-echo "* Tell Chromium we don't want to sign in"
-echo "* Configure Chromium to start \"where you left off\""
-echo "  * F11 to exit full screen"
-echo "  * Alt + F, then S to go to Settings"
-echo "  * Type \"continue\" to filter the options"
-echo "  * Tab to select \"Continue where you left off\""
-echo "  * (or in German \"Zuletzt angesehene Seite oeffnen\")"
-echo "  * "
-echo "* Alle Tabs schließen und Raspberry neu Starten"
-echo "(press enter when ready)"
+question "** FERTIG **"
+echo "Erstellung des Images abgeschlossen."
+echo "(weiter mit Enter)"
 read
 
 

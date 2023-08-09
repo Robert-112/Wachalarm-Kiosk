@@ -78,6 +78,10 @@ Es gibt folgende Optionen:
 screen_type=t
 ```
 
+> Achtung!
+>
+> Wird ein PC-Monitor verwendet, kann es zu Problemen bei der Sound-Ausgabe kommen. Lösungsansätze finden Sie im Abschnitt ["Bekannte Fehler"](#kein-ton-über-hdmi-raspberry-pi-4)
+
 #### Standby - Websocket-URL
 *(gilt nur wenn die Standby-Funktion aktiviert wurde)*
 
@@ -221,8 +225,20 @@ Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Taste
 ### kein Ton über HDMI (Raspberry Pi 4)
 - stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
 - prüfen Sie ob der Monitor / Fernseher über den angeschlossenen HDMI-Port auch wirklich einen Ton ausgegeben kann
-- wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F2` (Login notwendig) in die Konfigurationsoberfläche des Raspberrys und prüfen Sie ob HDMI als Audio-Ausgabequelle eingestellt wurde
 - wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F3` (Login notwendig) in die Wartungskonsole und prüfen Sie mit dem Befehl `speaker-test` ob ein Test-Ton ausgegeben wird
+
+#### Lösungsvariante 1 - Audio-Quelle bei HDMI-Fernseher festlegen
+- wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F2` (Login notwendig) in die Konfigurationsoberfläche des Raspberrys und prüfen Sie ob HDMI-0 als Audio-Ausgabequelle eingestellt wurde
+- verlassen Sie die Konfigurationsoberfläche und starten Sie den Raspberry neu (`sudo reboot`)
+
+#### Lösungsvariante 2 - Audio-Quelle bei PC-Monitor mit integrierten Lautsprechern
+- wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F3` (Login notwendig) in die Wartungskonsole
+- führen Sie den Befehl `sudo nano /boot/config.txt` aus umd die Konfigurationsdatei des Raspberrys zu bearbeiten
+- aktivieren Sie den Parameter `dtparam=audio=on` indem Sie das `#` davor entfernen
+- deaktivieren Sie den Parameter `dtoverlay=vc4-kms-v3d` indem Sie ein `#` davor setzen
+- speichern Sie die Datei (`STRG` + `x` und mit `ja` bestätigen) und starten Sie den Raspberry neu (`sudo reboot`)
+- öffnen Sie nach dem Neustart erneut die Wartungskonsole (`STRG` + `ALT` + `F3`) und prüfen Sie mit dem Befehl `speaker-test` ob ein Test-Ton ausgegeben wird
+- prüfen Sie alternativ noch, welche Audio-Quelle in den Systemeinstellungen gesetzt wurde (siehe [Lösungsvariante 1](#lösungsvariante-1---audio-quelle-bei-hdmi-fernseher-festlegen))
 
 ### ich benötige ein anderes Kennwort
 - wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F2` (Login notwendig) in die Konfigurationsoberfläche des Raspberrys
@@ -232,7 +248,8 @@ Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Taste
 
 ### Monitor geht nicht in Standby
 - stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
-- prüfen Sie ob in den [Standby-Einstellungen zur Art des Monitors](#standby---art-des-monitors-festlegen) der richtige Monitor-Typ hinterlegt wurde
+- prüfen Sie ob in den [Standby-Einstellungen zur Art des Monitors](#standby---art-des-monitors-festlegen) der richtige Monitor-Typ hinterlegt wurde (`m` für PC-Monitor, `t` für TV-Gerät)
+  - mit den [Tastenkombination](#tastenkombinationen) `STRG` + `I` bzw. `STRG` + `O` kann geprüft werden, ob die Standby-Funktion generell funktioniert
 - prüfen Sie ob in den [Standby-Einstellungen zur Wachennummer](#standby---wachennummer) die richtige Wachennummer hinterlegt wurde
 
 ### Monitor / Fernseher aus Standby erwecken
