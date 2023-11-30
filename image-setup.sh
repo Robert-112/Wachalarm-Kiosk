@@ -11,6 +11,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" # Figure
 cd "$DIR"
 
 SSH_CONNECT_TIMEOUT=30
+SSH_PUBKEY="$(cat ~/.ssh/id_rsa.pub)"
 
 # Funktionen fuer das Skript
 function echo-bold {
@@ -110,6 +111,10 @@ echo "* es folgen viele Password-Abfragen fuer den SSH-Zugriff auf den Raspberry
 echo "IP-Adresse eingeben:"
 read IP
 
+working "Installing temporary SSH pubkey"
+echo -e "Password hint: \"wachalarm\""
+ssh "mkdir .ssh && echo '$SSH_PUBKEY' > .ssh/authorized_keys"
+
 #working "Setting locale"
 # We want to do this as early as possible, so perl et al won't complain about misconfigured locales for the rest of the image prep
 ssh "echo $LOCALE | sudo tee /etc/locale.gen"
@@ -183,8 +188,14 @@ ssh "sudo cp /home/pi/hosts.deny /etc/hosts.deny && sudo cp /home/pi/hosts.allow
 working "Waip-Standby-Skript installieren"
 ssh "(cd /home/pi && npm install)"
 
-working "Rebooting the Pi"
-ssh "sudo reboot"
+working "Disabling SSH access & restoring safe defaults & shutting down"
+tempFile="$(ssh mktemp)" # need to do this via a temp file on the host, otherwise disabling SSH while using SSH ends up being problematic
+ssh "chmod a+x $tempFile"
+ssh "echo 'rm -f /etc/ssh/ssh_host_*_key*; systemctl enable regenerate_ssh_host_keys; rm .ssh/authorized_keys; systemctl disable ssh; reboot' > $tempFile"
+ssh "sudo nohup $tempFile"
+
+#working "Rebooting the Pi"
+#ssh "sudo reboot"
 
 echo "Waiting for host to come back up..."
 until SSH_CONNECT_TIMEOUT=5 ssh "echo OK"
