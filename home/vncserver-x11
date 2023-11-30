@@ -2,4 +2,5 @@ _AnlLastConnTime=int64:0000000000000000
 _LastUpdateCheckSuccessTime=int64:01d91081b40850e0
 _LastUpdateCheckTime=int64:01d91081b40850e0
 Authentication=VncAuth
+Encryption=AlwaysOff
 Password=309882a3011525908f3218ec294ea459

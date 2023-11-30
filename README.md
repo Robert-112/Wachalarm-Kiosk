@@ -36,7 +36,7 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 
 ### Konfigurations-Datei
 
-Die wichtigsten Einstellungen lassen sich ohne vorkenntnisse (von z.B. Linux) direkt mit einem normalen PC anpassen.
+Die wichtigsten Einstellungen lassen sich ohne Vorkenntnisse (von z.B. Linux) direkt mit einem normalen PC anpassen.
 
 Benötigt wird ein SD-Karten-Lesegerät und ein Text-Editor. 
 

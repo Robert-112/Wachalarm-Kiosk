@@ -210,6 +210,10 @@ read
 # Einrichutng -> "Mute" 1 1 9 "Enter"
 # Menu OSD -> Menu Display -> off
 
+# TV OSD-Menu deaktivieren
+# im ausgeschalteten Zustand
+#  "Mute" 1 1 9 "POWER"
+
 # Raspberry an TV HDMI 1 
 # Raspberry HDMI 0 (Neben USB-C-Stromanschluss)
 # lautsprecher tv auf 25
