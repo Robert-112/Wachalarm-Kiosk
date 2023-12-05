@@ -49,8 +49,8 @@ static routers=192.168.179.8
 static domain_name_servers=1.1.1.1
 
 DHCPCDEOF
-rm -f /boot/firstrun.sh
-sed -i 's| systemd.run.*||g' /boot/cmdline.txt
+rm -f /boot/firmware/firstrun.sh
+sed -i 's| systemd.run.*||g' /boot/firmware/cmdline.txt
 # Passwort des Benutzers pi aendern
 echo "pi:ganz_geheim" | sudo chpasswd
 exit 0

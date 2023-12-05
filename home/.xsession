@@ -47,8 +47,8 @@ sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' $HomeFolder/.config/c
 # Get URL from file (if set)
 URL="file:///home/pi/LICENSE.html"
 standby_enable=0
-if [ -f /boot/wachalarm_einstellungen.txt ]; then
-    source /boot/wachalarm_einstellungen.txt
+if [ -f /boot/firmware/wachalarm_einstellungen.txt ]; then
+    source /boot/firmware/wachalarm_einstellungen.txt
     URL=$startup_url
 fi
 

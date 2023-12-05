@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -f /boot/wachalarm_einstellungen.txt ]; then
-    source /boot/wachalarm_einstellungen.txt
+if [ -f /boot/firmware/wachalarm_einstellungen.txt ]; then
+    source /boot/firmware/wachalarm_einstellungen.txt
 fi
 
 #Standby-Script ausfuehren

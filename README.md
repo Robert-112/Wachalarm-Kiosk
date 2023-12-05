@@ -233,7 +233,7 @@ Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Taste
 
 #### Lösungsvariante 2 - Audio-Quelle bei PC-Monitor mit integrierten Lautsprechern
 - wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F3` (Login notwendig) in die Wartungskonsole
-- führen Sie den Befehl `sudo nano /boot/config.txt` aus umd die Konfigurationsdatei des Raspberrys zu bearbeiten
+- führen Sie den Befehl `sudo nano /boot/firmware/config.txt` aus umd die Konfigurationsdatei des Raspberrys zu bearbeiten
 - aktivieren Sie den Parameter `dtparam=audio=on` indem Sie das `#` davor entfernen
 - deaktivieren Sie den Parameter `dtoverlay=vc4-kms-v3d` indem Sie ein `#` davor setzen
 - speichern Sie die Datei (`STRG` + `x` und mit `ja` bestätigen) und starten Sie den Raspberry neu (`sudo reboot`)

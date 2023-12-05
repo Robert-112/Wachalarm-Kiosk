@@ -53,7 +53,7 @@ echo "geben Sie den Pfad zur SD-Karte an (z.B. \"/media/sdkarte\")"
 read mount_path
 
 # Variablen
-MOUNTED_BOOT_VOLUME="$mount_path"
+MOUNTED_BOOT_VOLUME="$mount_path"/firmware
 BOOT_CMDLINE_TXT="$MOUNTED_BOOT_VOLUME/cmdline.txt"
 BOOT_CONFIG_TXT="$MOUNTED_BOOT_VOLUME/config.txt"
 
@@ -189,7 +189,7 @@ ssh "sudo cp /home/pi/hosts.deny /etc/hosts.deny && sudo cp /home/pi/hosts.allow
 working "Waip-Standby-Skript installieren"
 ssh "(cd /home/pi && npm install)"
 
-working "SSH-Key entfernen und Pi neustarten"
+working "SSH-Key entfernen, Wachalarm-Einstellungen kopieren und Pi neustarten"
 ssh "rm .ssh/authorized_keys"
 ssh "sudo reboot"
 
