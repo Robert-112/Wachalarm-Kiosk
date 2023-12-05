@@ -53,7 +53,7 @@ echo "geben Sie den Pfad zur SD-Karte an (z.B. \"/media/sdkarte\")"
 read mount_path
 
 # Variablen
-MOUNTED_BOOT_VOLUME="$mount_path"/firmware
+MOUNTED_BOOT_VOLUME="$mount_path"
 BOOT_CMDLINE_TXT="$MOUNTED_BOOT_VOLUME/cmdline.txt"
 BOOT_CONFIG_TXT="$MOUNTED_BOOT_VOLUME/config.txt"
 
