@@ -26,7 +26,7 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 2. Entpacken Sie die komprimierte Datei auf Ihrem Computer (z.B. dem Programm [7Zip](https://7-zip.de/index.html)).
 3. Schreiben Sie das Image mit Hilfe eines SD-Karten-Lesegeräts auf eine SD-Karte. Hierzu kann unter Windows die Anwendung [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/) genutzt werden.
 4. Legen Sie die anzuzeigende [Webseite und die weitere Optionen fest](#konfigurations-datei).
-5. *Optional*: Legen Sie fest, ob der Raspberry Pi sich automatisch mit einem [WLAN verbinden](#wlan-setup) soll.
+5. *Optional*: Legen Sie fest, ob der Raspberry Pi sich automatisch mit einem [WLAN verbinden](#wlan-einstellen) soll.
 6. *Optional*: Setzen Sie eine [feste IP-Adresse](#ip-adresse) für das System.
 7. Setzen Sie die SD-Karte in den Raspberry Pi. Verbinden Sie Ihn mit dem Monitor und dem Internet (Netzwerkkabel oder WLAN). Starten Sie das Gerät.
 
@@ -149,36 +149,22 @@ restart_type=w
 
 ### WLAN einstellen
 
-WLAN-Verbindungen lassen Sich beim Raspberry über eine spezielle Datei vorgeben, ohne weitere Einstellungen am System zu tätigen. Gehen Sie wie folgt vor, um WLAN zu aktivieren:
+WLAN-Verbindungen lassen Sich beim Raspberry über die Terminal-Anwendung `sudo raspi-config` einstellen. Gehen Sie dazu wie folgt vor:
 
-1. Schließen Sie die zuvor mit dem Image beschriebene SD-Karte an ihren PC an (z.B. per USB-Adapter).
-2. Im Datei-Explorer sollte jetzt ein neues Laufwerk erscheinen. In der Partition "Boot" der SD-Karte erstellen Sie eine Datei mit dem Namen `wpa_supplicant.conf`.
-3. Eine fertige Vorlage findet sich hier: [wpa_supplicant.conf](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config/wpa_supplicant.conf) 
-4. Ersetzen Sie `Name-des-WLANs` und `ganz-geheimes-kennwort` mit Ihren eigenen WLAN-Einstellungen.
-5. Speichern Sie die Datei auf der SD-Karte und setzen Sie diese wieder in den Raspberry Pi ein. Nach Abschluss des Startvorgangs sollte sich das Gerät eigenständig mit dem WLAN verbinden.
+1. Tastatur und Monitor an den Raspberry Pi anschließen und diesen starten.
+2. Sobald dieser vollständig hochgefahren ist, drücken Sie die Tastenkombination `STRG` + `ALT` + `F3`
+3. Melden Sie sich mit Benutzernamen und Passwort an (z.B. `pi` und `wachalarm`).
+4. Geben Sie `sudo raspi-config` ein und wählen Sie:
+   - `1. System Options`
+   - `S1 Wireless LAN`
+5. Geben Sie nun den Netzwerknamen des WLANs ein (`SSID`).
+6. Geben Sie das Kennwort des WLANs ein (frei lassen, wenn offenes WLAN)
+7. Verlassen Sie das Menu und starten Sie den Raspberry mit dem Befehl `sudo reboot` neu.
+8. Nach dem Neustart sollte sich der Raspberry automatisch mit dem WLAN verbinden.
 
-#### Beispiel wpa_supplicant.conf für WLAN _mit Kennwort_
-```
-country=DE
-update_config=1
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-network={
-  key_mgmt=WPA-PSK
-  ssid="Name-des-WLANs"
-  psk="ganz-geheimes-kennwort"
-}
-```
+##### WPA-Supplicant
 
-#### Beispiel wpa_supplicant.conf für WLAN _ohne Kennwort_
-```
-country=DE
-update_config=1
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-network={
-   ssid="Name-des-WLANs"
-   key_mgmt=NONE
-}
-```
+Die frühere Einrichtung über die Datei `wpa_supplicant.conf` wird seit der Version `Debian-Bookworm` nicht mehr korrekt unterstützt und wurde deshalb hier entfernt.
 
 ---
 
