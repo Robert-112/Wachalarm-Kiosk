@@ -12,7 +12,10 @@ const { exec } = require('child_process');
 
 console.log('start', waipurl, wachennr);
 
-const socket = io(waipurl);
+const socket = io(waipurl, {
+  transports: ['websocket'],
+  rejectUnauthorized: false
+});
 
 socket.on('connect', function () {
   console.log('connect', wachennr);
