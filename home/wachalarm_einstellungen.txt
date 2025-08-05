@@ -1,30 +1,69 @@
-# Web-Adresse, die beim Start geoeffnet werden soll, z.B. https://wachalarm.leitstelle-lausitz.de/waip/520101
-startup_url=https://wachalarm.leitstelle-lausitz.de/waip/0
+# Webseite die beim Start automatisch geoeffnet werden soll
+# z.B. https://wachalarm.cloud.lstbb.de/waip/520101 fuer den Alarmmonitor der Wache CB FW Cottbus
+startup_url=https://wachalarm.cloud.lstbb.de/waip/0
 #
 #
-# Ausschalten des Bildschrims bei Standby aktivieren, 1 == an, 0 == aus
-standby_enable=1
+# ausschalten des Bildschrims im Standby aktivieren
+# 1 == an, 0 == aus (der optionale Wert fuer 'custom_standby_url' wird ignoriert wenn hier 1 gesetzt ist, der Monitor geht immer in Standby)
+standby_enable=0
 #
 #
-# Monitor-Einstellung fuer Standby, "m" == PC-Monitor, "t" == TV mit HDMI-CEC
+# Monitor-Typ fuer die aktivierung des Standby
+# "m" == PC-Monitor, "t" == TV-Monitor mit HDMI-CEC
 screen_type=t
 #
 #
-# wenn Standby aktiv: URL zur auswahl der Alarmmonitore, z.B. https://wachalarm.leitstelle-lausitz.de/waip/
-standby_waipurl=https://wachalarm.leitstelle-lausitz.de/waip
+# wenn Standby aktiviert wurde, muss hier noch die URL zur Auswahl des Alarmmonitors gesetzt werden (Websocket-URL)
+# z.B. https://wachalarm.cloud.lstbb.de/waip/
+standby_waipurl=https://wachalarm.cloud.lstbb.de/waip
 #
 #
-# wenn Standby aktiv: Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. 520101 für CB FW Cottbus
+# wenn Standby aktiviert wurde, ist hier die Nummer der Wache zu hinterlegen, bei der bei Alarmen der Monitor angeschaltet werden soll
+# z.B. 520101 für CB FW Cottbus
 standby_wachennr=0
 #
 #
-# Senden von System-Statusmeldungen aktivieren, 1 == an, 0 == aus
-report_enable=1
+###
+### optionale Einstellungen (zum aktivieren '#' bzw. '0' entfernen)
+###
 #
 #
-# wenn System-Statusmeldungen aktiv, dann an folgende URL senden
-report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
-#
-#
-# Neustarteinstellungen, "0" == inaktiv, "w" == Mo 3:00, "z" == Di & Fr 3:00, "t" == immer 3:00
+# Rechner nachts automtatisch neustarten?
+# "0" == inaktiv, "w" == immer Mo 3:00, "z" == Di & Fr 3:00, "t" == jeden Tag 3:00
 restart_type=w
+#
+# 
+# Senden von System-Statusmeldungen aktivieren, 1 == an, 0 == aus
+report_enable=0
+#
+# 
+# wenn System-Statusmeldungen aktiv, dann an die URL angeben, welche diese gesendet werden sollen
+report_url=https://wachalarm.cloud.lstbb.de/client_statusmessage
+#
+#
+# WLAN-Check
+# prüft alle 15 Minuten ob eine WLAN-Verbindung besteht, falls nein erfolgt ein Neustart; 1 == an, 0 == aus
+check_wifi=0
+#
+#
+# Url fuer eine WPAD-Konfiguration (Internetzugriff ueber Proxy)
+#proxy_pac_url=http://wpad.proxy.intern.de
+#
+#
+# URL fuer einen Proxy-Server
+#proxy_server_url=http://proxy.intern.de:3128
+#
+#
+# Pfad zu einem eigenen Start-Logo (wird beim Start in das /home-Verzeichnis kopiert)
+# /boot/firmware/background.png = background.png auf der SD-Karte unter Windows
+#custom_start_picture=/boot/firmware/background.png
+#
+#
+# soll im Standby (kein Alarm aktiv) eine andere Webseite angezeigt werden?
+# Achtung: der Wert 'standby_enable' (siehe oben) muss auf '0' gesetzt sein, sonst wird der Monitor ausgeschaltet
+#custom_standby_url=https://uhr.ptb.de/
+#
+#
+# spezielle Funktionen des Browsers aktiveren 
+# z.B. 'WebContentsForceDark' damit Webseiten im Dunkel-Modus geladen werden (sofern verfügbar)
+#custom_features=WebContentsForceDark

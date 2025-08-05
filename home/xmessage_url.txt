@@ -1,0 +1,5 @@
+ACHTUNG: 
+
+Wenn kein Einsatz anliegt,
+zeigt der Monitor eine zuvor
+festgelegte Webseite an.
