@@ -11,7 +11,9 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 - **Startet unmittelbar im Vollbild** - Chromium Web-Browser mit allen wichtigen Funktionen
 - **Automatatische Sicherheitsupdates** - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
 - **Automatische Wiederherstellung** - bei Neustart oder Stromausfall startet das System im vorherigen Zustand eigenständig neu
-- *Optional:* **Stromsparfunktion** - liegt kein Alarm an, kann der Monitor ausgeschaltet werden
+- *Optional:*
+   - **Stromsparfunktion** - liegt kein Alarm an, kann der Monitor autmoatisch ausgeschaltet werden
+   - **andere Webseite im Standby** - liegt kein Alarm an, kann eine andere Webseite mit eigenen Informationen angezeigt werden
 - **Maus wird ausgeblendet** - sofern eine Maus angeschlossen ist, wird diese nach inaktivität ausgeblendet
 
 ---
@@ -28,32 +30,31 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 4. Legen Sie die anzuzeigende [Webseite und die weitere Optionen fest](#konfigurations-datei).
 5. *Optional*: Legen Sie fest, ob der Raspberry Pi sich automatisch mit einem [WLAN verbinden](#wlan-einstellen) soll.
 6. *Optional*: Setzen Sie eine [feste IP-Adresse](#ip-adresse) für das System.
-7. Setzen Sie die SD-Karte in den Raspberry Pi. Verbinden Sie Ihn mit dem Monitor und dem Internet (Netzwerkkabel oder WLAN). Starten Sie das Gerät.
+7. Setzen Sie die SD-Karte in den Raspberry Pi. Verbinden Sie Ihn mit dem Monitor und dem Netzwerk (per Kabel oder WLAN). Starten Sie das Gerät.
 
 ---
 
-## Einstellungen
-
-### Konfigurations-Datei
+# Einstellungen (Konfigurations-Datei)
 
 Die wichtigsten Einstellungen lassen sich ohne Vorkenntnisse (von z.B. Linux) direkt mit einem normalen PC anpassen.
 
 Benötigt wird ein SD-Karten-Lesegerät und ein Text-Editor. 
 
 1. Schließen Sie die zuvor mit dem Image beschriebene SD-Karte an ihren PC an (z.B. per USB-Adapter).
-2. Im Datei-Explorer sollte jetzt ein neues Laufwerk erscheinen. In der Partition "Boot" der SD-Karte findet sich die Datei *[wachalarm_einstellungen.txt](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/home/wachalarm_einstellungen.txt)*.
-3. folgende Einstellungen können gesetzt werden:
+2. Im Datei-Explorer sollte jetzt ein neues Laufwerk erscheinen. In der Partition `Boot` auf der SD-Karte findet sich die Datei *[wachalarm_einstellungen.txt](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/home/wachalarm_einstellungen.txt)*.
+3. Die nachfolgenden Einstellungen können gesetzt werden:
 
+## Webseite beim Start
 
-#### Webseite beim Start
-
-Legt fest, welche Webseite beim Start geöffnet werden soll. Wollen Sie den Wachalarm für die Feuerwehr Cottbus anzeigen wäre dies z.B. die Adresse https://wachalarm.leitstelle-lausitz.de/waip/520101
+Legt fest, welche Webseite beim Start geöffnet werden soll. Wollen Sie den Wachalarm z.B. für die Feuerwehr Willmersdorf anzeigen wäre dies z.B. die Adresse [https://wachalarm.cloud.lstbb.de/waip/520101](https://wachalarm.cloud.lstbb.de/waip/521204)
 
 ```
-startup_url=https://wachalarm.leitstelle-lausitz.de/waip/520101
+startup_url=https://wachalarm.cloud.lstbb.de/waip/521204
 ```
 
-#### Standby - Funktion ein-/ausschalten
+## Standby 
+
+### Standbyfunktion ein-/ausschalten
 
 Legt fest ob der Bildschirm automatisch ausgeschaltet werden soll, wenn kein Einsatz anliegt.
 
@@ -65,7 +66,7 @@ Es gibt folgende Optionen:
 standby_enable=1
 ```
 
-#### Standby - Art des Monitors festlegen
+### Art des Monitors für Standby festlegen
 *(gilt nur wenn die Standby-Funktion aktiviert wurde)*
 
 Legt fest, was für ein Monitor verwendet wird. Je nach Typ (PC-Monitor oder Fernseher mit HDMI-CEC), sind unterschiedliche Befehle notwendig um den Monitor ein- oder auszuschalten.
@@ -82,34 +83,37 @@ screen_type=t
 >
 > Wird ein PC-Monitor verwendet, kann es zu Problemen bei der Sound-Ausgabe kommen. Lösungsansätze finden Sie im Abschnitt ["Bekannte Fehler"](#kein-ton-über-hdmi-raspberry-pi-4)
 
-#### Standby - Websocket-URL
+### Websocket-URL für korrekte Standbyausführung
 *(gilt nur wenn die Standby-Funktion aktiviert wurde)*
 
 Dieser Wert sollte normalerweise nicht geändert werden. Es handelt sich um die URL des Wachalarm-Servers, über welche Websocket-Befehle empfangen und verarbeitet werden. Nur mit dieser URL kann das Standby-Signal korrekt ausgewertet werden.
 
-
 ```
-standby_waipurl=https://wachalarm.leitstelle-lausitz.de/waip
+standby_waipurl=https://wachalarm.cloud.lstbb.de/waip
 ```
 
 > **Achtung!**
 >
 > Es handelt sich hierbei nicht die URL des einzelnen Alarmmonitors!
 
-#### Standby - Wachennummer
+### Standby - Wachennummer
 *(gilt nur wenn die Standby-Funktion aktiviert wurde)*
 
-Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. 520101 für CB FW Cottbus
+Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. `521204` für CB FW Willmersdorf
 
 ```
-standby_wachennr=520101
+standby_wachennr=521204
 ```
 
 > **Achtung!**
 >
 > Hier sollte im Normalfall immer die gleiche Nummer des aufgerufenen Alarmmonitors hinterlegt werden (siehe Parameter `startup_url`).
 
-#### System-Statusmeldungen aktivieren
+---
+
+# Optionale Einstellungen
+
+## System-Statusmeldungen
 
 Hiermit kann ein automatisches Senden von Status-Meldungen aktiviert werden. 
 
@@ -122,18 +126,18 @@ Es handelt sich um allgemeine Systeminforamtionen wie z.B. Kernel-Version, Hardw
 report_enable=1
 ```
 
-#### System-Statusmeldungen - Status-URL
+### System-Statusmeldungen - Status-URL
 *(gilt nur wenn System-Statusmeldungen aktiviert wurden)*
 
 URL an welche Status-Meldungen durch das System gesendet werden.
 
 ```
-report_url=https://wachalarm.leitstelle-lausitz.de/client_statusmessage
+report_url=https://wachalarm.cloud.lstbb.de/client_statusmessage
 ```
 
-#### automatische Neustarts
+## automatische Neustarts in der Nacht
 
-Legt fest, ob und wenn ja wann, ein automatischer Neustart des Raspberry Pi erfolgen soll. Diese Funktion ist hilfreich um z.B. bei schlechten WLAN-Verbindungen das System automatisch neuzustarten.
+Legt fest, ob und wann, ein automatischer Neustart des Raspberry Pi erfolgen soll. 
 
 Es gibt folgende Optionen:
 - 0 = automatischer Neustart ist deaktiviert.
@@ -143,6 +147,70 @@ Es gibt folgende Optionen:
 
 ```
 restart_type=w
+```
+
+## Neustart bei fehlender WLAN-Verbindung
+
+Diese Funktion ist hilfreich um z.B. bei schlechten WLAN-Verbindungen den Raspberry automatisch neuzustarten, damit er sich wieder mit dem WLAN verbindet.
+Die WLAN-Verbindung wird alle 15 Minuten geprüft, falls die Funktion aktiviert wurde.
+
+- 1 = an
+- 0 = aus
+
+```
+check_wifi=1
+```
+
+## Proxy-Einstellungen
+
+In Unternehmen werden oftmals Proxy-Systeme für den Zugriff auf das Internet eingesetzt. Hierfür können zwei Werte gesetzt werden
+
+### Proxy-PAC (WPAD)
+
+URL für eine automatische Proxy-Konfiguraiton per WPAD. Zum aktivieren wird das `#` vor dem Wert entfernt.
+
+```
+proxy_pac_url=https://wpad.intern.lokal.de
+```
+
+### Proxy-Adresse (URL)
+
+URL für einen zu verwenden Proxy-Server. Zum aktivieren wird das `#` vor dem Wert entfernt.
+
+```
+proxy_server_url=http://proxy.intern.de:3128
+```
+
+## weitere optionale Einstellungen
+
+### Eigenes Logo beim Start
+
+Pfad auf der SD-Karte, für ein eigenes Start-Logo.
+Wird beim Start auf die SD-Karte übernommen. Zum aktivieren wird das `#` vor dem Wert entfernt.
+(/boot/firmware/background.png = background.png auf der SD-Karte unter Windows)
+
+```
+custom_start_picture=/boot/firmware/background.png
+```
+
+### Webseite wenn kein Einsatz anliegt
+
+Soll im Standby (kein Alarm aktiv) eine andere Webseite angezeigt werden, dann kann hier eine entsprechende Adresse angegeben werden. Zum aktivieren wird das `#` vor dem Wert entfernt.
+
+```
+custom_standby_url=https://uhr.ptb.de/
+```
+
+> **Achtung!**
+>
+> Der Wert `standby_enable` muss auf `0` gesetzt sein, sonst wird der Monitor im Standby ausgeschaltet und die gewünschte Webseite wird nicht angezeigt.
+
+### spezielle Funktionen des Browsers aktiveren 
+
+Hiermit kann z.B. der Paramaeter `WebContentsForceDark` des Chromium-Browsers übergeben werden. So werden Webseiten im Dark-Mode angezeigt (sofern verfügbar). Zum Aktivieren wird das `#` vor dem Wert entfernt.
+
+```
+custom_features=WebContentsForceDark
 ```
 
 ---
