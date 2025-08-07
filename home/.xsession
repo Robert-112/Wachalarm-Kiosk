@@ -11,7 +11,23 @@ xset s off # don't activate screensaver
 xset -dpms # disable DPMS (Energy Star) features.
 xset s noblank # don't blank the video device
 
+# Get URL from file (if set)
+URL="file:///home/pi/LICENSE.html"
+PROXY=""
+if [ -f /boot/firmware/wachalarm_einstellungen.txt ]; then
+    source /boot/firmware/wachalarm_einstellungen.txt
+    URL=$startup_url
+    URL_STANDBY=$custom_standby_url
+    PROXY_PAC=$proxy_pac_url
+    PROXY_URL=$proxy_server_url
+    FEATURES=$custom_features
+    NEW_BACKGROUND_PATH=$custom_start_picture
+fi
+
 # Set X screen background
+if [ -n "${NEW_BACKGROUND_PATH}" ]; then
+  cp $NEW_BACKGROUND_PATH /home/pi/background.png
+fi
 sudo nitrogen --set-centered background.png
 
 # Hide cursor afer 5 seconds of inactivity
@@ -44,14 +60,6 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' $HomeFolder/.config/chrom
 #Clean up Local State
 sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' $HomeFolder/.config/chromium/"Local State"
 
-# Get URL from file (if set)
-URL="file:///home/pi/LICENSE.html"
-standby_enable=0
-if [ -f /boot/firmware/wachalarm_einstellungen.txt ]; then
-    source /boot/firmware/wachalarm_einstellungen.txt
-    URL=$startup_url
-fi
-
 # Start and detach Chromium
 # http://peter.sh/experiments/chromium-command-line-switches/
 # Note that under matchbox, starting in full-screen without a window size doesn't behave well when you try to exit full screen (see https://unix.stackexchange.com/q/273989)
@@ -59,8 +67,11 @@ chromium-browser \
   --start-fullscreen \
   --window-position=9000,9000 \
   --disable-infobars \
+  --enable-features=$FEATURES \
   --check-for-update-interval=604800 \
-  $URL &
+  --proxy-server=$PROXY_URL \
+  --proxy-pac-url=$PROXY_PAC \
+  $URL $URL_STANDBY &
 # See https://github.com/futurice/chilipie-kiosk/issues/99#issuecomment-597119842 for the need for the fishy-sounding "--check-for-update-interval=1 --simulate-critical-update" switches; TODO: remove when not needed
 
 # Hide Chromium while it's starting/loading the page
