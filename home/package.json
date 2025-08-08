@@ -1,11 +1,11 @@
 {
   "name": "waip_standby_websocket",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "start": "node waip_standby_websocket.js"
   },
   "dependencies": {
-    "socket.io-client": "^4.8.1"
+    "chrome-remote-interface": "^0.33.3"
   }
 }

@@ -67,6 +67,8 @@ chromium-browser \
   --start-fullscreen \
   --window-position=9000,9000 \
   --disable-infobars \
+  --autoplay-policy=no-user-gesture-required \
+  --remote-debugging-port=9222 \
   --enable-features=$FEATURES \
   --check-for-update-interval=604800 \
   --proxy-server=$PROXY_URL \

@@ -83,32 +83,6 @@ screen_type=t
 >
 > Wird ein PC-Monitor verwendet, kann es zu Problemen bei der Sound-Ausgabe kommen. Lösungsansätze finden Sie im Abschnitt ["Bekannte Fehler"](#kein-ton-über-hdmi-raspberry-pi-4)
 
-### Websocket-URL für korrekte Standbyausführung
-*(gilt nur wenn die Standby-Funktion aktiviert wurde)*
-
-Dieser Wert sollte normalerweise nicht geändert werden. Es handelt sich um die URL des Wachalarm-Servers, über welche Websocket-Befehle empfangen und verarbeitet werden. Nur mit dieser URL kann das Standby-Signal korrekt ausgewertet werden.
-
-```
-standby_waipurl=https://wachalarm.cloud.lstbb.de/waip
-```
-
-> **Achtung!**
->
-> Es handelt sich hierbei nicht die URL des einzelnen Alarmmonitors!
-
-### Standby - Wachennummer
-*(gilt nur wenn die Standby-Funktion aktiviert wurde)*
-
-Nummer der Wache, für die bei Alarmen der Monitor angeschaltet werden soll, z.B. `521204` für CB FW Willmersdorf
-
-```
-standby_wachennr=521204
-```
-
-> **Achtung!**
->
-> Hier sollte im Normalfall immer die gleiche Nummer des aufgerufenen Alarmmonitors hinterlegt werden (siehe Parameter `startup_url`).
-
 ---
 
 # Optionale Einstellungen
@@ -151,8 +125,11 @@ restart_type=w
 
 ## Neustart bei fehlender WLAN-Verbindung
 
-Diese Funktion ist hilfreich um z.B. bei schlechten WLAN-Verbindungen den Raspberry automatisch neuzustarten, damit er sich wieder mit dem WLAN verbindet.
-Die WLAN-Verbindung wird alle 15 Minuten geprüft, falls die Funktion aktiviert wurde.
+Diese Funktion ist hilfreich um z.B. bei schlechten WLAN-Verbindungen den Rechner automatisch neuzustarten, damit er sich wieder mit dem WLAN verbindet.
+
+Die WLAN-Verbindung wird durch eine geplante Aufgabe (Cronjob) alle 15 Minuten geprüft (xx:00, xx:15, xx:30, xx:45), aber nur wenn die Funktion aktiviert wurde.
+
+Es wird durch ein Skript die Erreichbarkeit der IP-Adresse des Gateways der WLAN-Verbindung mittels `ping` geprüft. Kann das Gateway fünf (5) mal hintereinder nicht erreicht werden, wird ein Neustart des Gerätes durchgeführt.
 
 - 1 = an
 - 0 = aus
@@ -195,7 +172,7 @@ custom_start_picture=/boot/firmware/background.png
 
 ### Webseite wenn kein Einsatz anliegt
 
-Soll im Standby (kein Alarm aktiv) eine andere Webseite angezeigt werden, dann kann hier eine entsprechende Adresse angegeben werden. Zum aktivieren wird das `#` vor dem Wert entfernt.
+Soll im Standby (es ist kein Alarm aktiv) eine andere Webseite angezeigt werden, dann kann hier eine entsprechende Adresse angegeben werden. Zum aktivieren wird das `#` vor dem Wert entfernt.
 
 ```
 custom_standby_url=https://uhr.ptb.de/
@@ -215,7 +192,9 @@ custom_features=WebContentsForceDark
 
 ---
 
-### WLAN einstellen
+# Hilfestellungen
+
+## WLAN einstellen
 
 WLAN-Verbindungen lassen Sich beim Raspberry über die Terminal-Anwendung `sudo raspi-config` einstellen. Gehen Sie dazu wie folgt vor:
 
@@ -234,9 +213,7 @@ WLAN-Verbindungen lassen Sich beim Raspberry über die Terminal-Anwendung `sudo 
 
 Die frühere Einrichtung über die Datei `wpa_supplicant.conf` wird seit der Version `Debian-Bookworm` nicht mehr korrekt unterstützt und wurde deshalb hier entfernt.
 
----
-
-### IP-Adresse vorgeben
+## IP-Adresse vorgeben
 
 Mittels der Datei `cmdline.txt` kann direkt eine feste IP-Adresse für den Raspberry Pi vorgegeben werden.
 
@@ -250,9 +227,7 @@ Damit wird die IP-Adresse für die Schnittstelle `eth0` auf 192.168.2.20 festleg
 
 Bereits angepasste `cmdline.txt`-Dateien finden Sie hier: [optional_boot_config](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/optional_boot_config) 
 
----
-
-## Hardware
+# Hardware
 
 Dieses Image sollte mit allen bekannten [Raspberry Pi's](https://www.raspberrypi.org/products/) funktionieren. Die Versionen 3 und 4 werden empfohlen, da die älteren Varianten zu wenig Leistung bieten. Raspberry 3 und 4 haben zudem ein eingebautes WLAN-Modul.
 
@@ -260,9 +235,7 @@ Stellen Sie sicher, dass Sie eine [kompatible SD-Karte](http://elinux.org/RPi_SD
 
 Ein Raspberry Pi benötigt ein [2.5 A USB-Netzteil](https://www.raspberrypi.org/documentation/hardware/raspberrypi/power/README.md). 
 
----
-
-## Tastenkombinationen
+# Tastenkombinationen
 
 Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Tastenkombination zur Verfügung:
 - `STRG` + `i` -> schaltet den Monitor ein (I)
@@ -272,20 +245,18 @@ Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Taste
 - `STRG` + `ALT` + `F2` -> wechselt zum Konfigutaions-Programm des Raspberry pi (Login notwendig, startet `sudo raspi-config`) 
 - `STRG` + `ALT` + `F3` -> wechselt zur Konsole (Login notwendig, Eingabekonsole für Wartung)
 
----
+# Bekannte Fehler
 
-## Bekannte Fehler
-
-### kein Ton über HDMI (Raspberry Pi 4)
+## kein Ton über HDMI (Raspberry Pi 4)
 - stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
 - prüfen Sie ob der Monitor / Fernseher über den angeschlossenen HDMI-Port auch wirklich einen Ton ausgegeben kann
 - wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F3` (Login notwendig) in die Wartungskonsole und prüfen Sie mit dem Befehl `speaker-test` ob ein Test-Ton ausgegeben wird
 
-#### Lösungsvariante 1 - Audio-Quelle bei HDMI-Fernseher festlegen
+### Lösungsvariante 1 - Audio-Quelle bei HDMI-Fernseher festlegen
 - wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F2` (Login notwendig) in die Konfigurationsoberfläche des Raspberrys und prüfen Sie ob HDMI-0 als Audio-Ausgabequelle eingestellt wurde
 - verlassen Sie die Konfigurationsoberfläche und starten Sie den Raspberry neu (`sudo reboot`)
 
-#### Lösungsvariante 2 - Audio-Quelle bei PC-Monitor mit integrierten Lautsprechern
+### Lösungsvariante 2 - Audio-Quelle bei PC-Monitor mit integrierten Lautsprechern
 - wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F3` (Login notwendig) in die Wartungskonsole
 - führen Sie den Befehl `sudo nano /boot/firmware/config.txt` aus umd die Konfigurationsdatei des Raspberrys zu bearbeiten
 - aktivieren Sie den Parameter `dtparam=audio=on` indem Sie das `#` davor entfernen
@@ -294,33 +265,36 @@ Wenn Sie eine Tastatur (z.B. per USB) angeschlossen haben, stehen folgende Taste
 - öffnen Sie nach dem Neustart erneut die Wartungskonsole (`STRG` + `ALT` + `F3`) und prüfen Sie mit dem Befehl `speaker-test` ob ein Test-Ton ausgegeben wird
 - prüfen Sie alternativ noch, welche Audio-Quelle in den Systemeinstellungen gesetzt wurde (siehe [Lösungsvariante 1](#lösungsvariante-1---audio-quelle-bei-hdmi-fernseher-festlegen))
 
-### ich benötige ein anderes Kennwort
+## ich benötige ein anderes Kennwort
 - wechseln Sie mit der [Tastenkombination](#tastenkombinationen) `STRG` + `ALT` + `F2` (Login notwendig) in die Konfigurationsoberfläche des Raspberrys
 - Navigieren Sie zu `Change User Password`
 - geben Sie ein neues Passwort ein und bestätigen Sie es
 - das eingegebene Kennwort gilt für den Benutzer `pi`
 
-### Monitor geht nicht in Standby
+## Monitor geht nicht in Standby
 - stellen Sie sicher das sie das HDMI-Kabel am HDMI-Port 0 des Raspberrys angeschlossen haben (direkt neben dem USB-C-Stromanschluss)
 - prüfen Sie ob in den [Standby-Einstellungen zur Art des Monitors](#standby---art-des-monitors-festlegen) der richtige Monitor-Typ hinterlegt wurde (`m` für PC-Monitor, `t` für TV-Gerät)
   - mit den [Tastenkombination](#tastenkombinationen) `STRG` + `I` bzw. `STRG` + `O` kann geprüft werden, ob die Standby-Funktion generell funktioniert
-- prüfen Sie ob in den [Standby-Einstellungen zur Wachennummer](#standby---wachennummer) die richtige Wachennummer hinterlegt wurde
 
-### Monitor / Fernseher aus Standby erwecken
+## Monitor / Fernseher aus Standby erwecken
 - wenn die Standby-Funktion aktiviert wurde, schaltet sich der angeschlossene Monitor oder Fernseher aus, solange kein Alarm angezeigt wird
 - mit der beschriebenen [Tastenkombination](#tastenkombinationen) `STRG` + `i` können Sie den Monitor wieder einschalten
 
 ---
 
-## Sonstiges
+# Sonstiges
 
-### Image-Erstellung
+## Image-Erstellung
 Mit dem Skript `image-setup.sh` kann eigenständig ein aktuelles Image für den Raspberry Pi erstellt werden. Benötigt wird ein PC mit aktuellem Linux (z.B. Ubuntu, oder zweiter Raspberry Pi).
 
 Das Skript selbst liefert alle notwendigen Informationen. 
 
 Der Linux-PC auf dem das Skript ausgeführt wird (`chmod +x image-setup.sh` und dann `./image-setup.sh`) und der Raspberry Pi welcher konfiguriert werden soll, müssen sich im Netzwerk erreichen können.
 
-### Fork
+## veraltete Variablen
+
+Die Variablen `standby_waipurl` und `standby_wachennr` werden mit Version 1.6 nicht mehr unterstützt. Sie können weiterhin gesetzt werden, haben aber keine Auswirkungen auf das System. 
+
+## Fork
 Dieses Projekt ist ein Fork von [chilipie-kiosk](https://github.com/jareware/chilipie-kiosk). Dort finden sich weitere Informationen und Antworten zu vielen Detailfragen.
 

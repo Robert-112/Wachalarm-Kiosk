@@ -13,16 +13,6 @@ standby_enable=0
 screen_type=t
 #
 #
-# wenn Standby aktiviert wurde, muss hier noch die URL zur Auswahl des Alarmmonitors gesetzt werden (Websocket-URL)
-# z.B. https://wachalarm.cloud.lstbb.de/waip/
-standby_waipurl=https://wachalarm.cloud.lstbb.de/waip
-#
-#
-# wenn Standby aktiviert wurde, ist hier die Nummer der Wache zu hinterlegen, bei der bei Alarmen der Monitor angeschaltet werden soll
-# z.B. 520101 für CB FW Cottbus
-standby_wachennr=0
-#
-#
 ###
 ### optionale Einstellungen (zum aktivieren '#' bzw. '0' entfernen)
 ###

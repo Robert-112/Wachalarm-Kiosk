@@ -13,7 +13,7 @@ if [[ "$standby_enable" == *"1"* ]]; then
     echo "Stromsparmodus"
     xmessage -center -timeout 9 -font -adobe-*-*-r-*--100-100-*-*-p-*-*-* -bg orange -buttons x:1 -file /home/pi/xmessage_standby.txt
     sleep 1
-    (cd /home/pi && npm run start --waipurl=$standby_waipurl --wachennr=$standby_wachennr &)
+    (cd /home/pi && npm run start --standby_screen=true --standby_tab=false &)
     exit 0
 fi
 
@@ -21,7 +21,7 @@ if [ -n "${custom_standby_url}" ]; then
     echo "URL-Modus"
     xmessage -center -timeout 9 -font -adobe-*-*-r-*--100-100-*-*-p-*-*-* -bg white -buttons x:1 -file /home/pi/xmessage_url.txt
     sleep 1
-    (cd /home/pi && npm run start --waipurl=$standby_waipurl --wachennr=$standby_wachennr --standbyurl=$custom_standby_url &)
+    (cd /home/pi && npm run start --standby_screen=false --standby_tab=true &)
     exit 0
 fi
 

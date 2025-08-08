@@ -1,89 +1,116 @@
 #!/usr/bin/env node
 
-const waipurl = process.env.npm_config_waipurl;
-const wachennr = process.env.npm_config_wachennr;
-let standbyurl = process.env.npm_config_standbyurl;
+// Robert Richter, 2025-08-08
 
-if (!waipurl || !wachennr) {
-  console.log("Variablen waipurl und / oder wachennr nicht gesetzt)");
-  process.exit(1);
+let standby_screen = process.env.npm_config_standby_screen;
+let standby_tab = process.env.npm_config_standby_tab;
+
+// Standby-Optionen aus den Umgebungsvariablen lesen
+if (!standby_screen || standby_screen === "false") {
+  standby_screen = false;
+}
+if (standby_screen === "true") {
+  standby_screen = true;
 }
 
-if (!standbyurl) {
-  standbyurl = "";
+// Standby-Tab-Optionen aus den Umgebungsvariablen lesen
+if (!standby_tab || standby_tab === "false") {
+  standby_tab = false;
+}
+if (standby_tab === "true") {
+  standby_tab = true;
 }
 
-const io = require("socket.io-client");
+// Importiere die benötigten Module
+const CDP = require('chrome-remote-interface');
 const { exec } = require("child_process");
 
-function isURL(str) {
-  // Regular expression for URL validation
-  const urlRegex =
-    /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+[^\s]*$/i;
+async function waip_sniffer() {
+  
+  // mit Chrome DevTools Protocol (CDP) verbinden
+  const client = await CDP();
 
-  return urlRegex.test(str);
+  const { Network, Page } = client;
+
+  await Network.enable();
+  await Page.enable();
+
+  // WebSocket-Nachrichten aus Chromium verarbeiten
+  Network.webSocketFrameReceived(({ requestId, timestamp, response }) => {
+
+    console.log('WS empfangen:', response);
+
+    // Prüfen, ob die Nachricht ein WebSocket-Frame ist und mit '42' (Socket.io 4) beginnt
+    if (typeof response.payloadData === 'string' && response.payloadData.startsWith('42')) {
+
+      // Entferne alles vor dem ersten Komma
+      const msg = response.payloadData.substring(response.payloadData.indexOf(',') + 1);
+
+      // Konvertiere die Nachricht in ein JSON-Objekt
+      const payload = JSON.parse(msg);
+
+      const event = payload[0];
+      const eventData = payload[1];
+
+      console.log('Event:', event);
+
+      if (event === 'io.standby') {
+        console.log('Standby erkannt');
+
+        // Monitor ausschalten
+        if (standby_screen) {
+          console.log("AUS - Display ausschalten");
+          var yourscript = exec("~/screen-off.sh", (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+              console.log(`exec error: ${error}`);
+            }
+          });
+        }
+
+        // Zum Standby-Tab wechseln
+        if (standby_tab) {
+          console.log("zum letzten Tab - Standbyseite - wechseln");
+          exec("xdotool key ctrl+9", (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Fehler beim Ausführen von xdotool: ${error}`);
+              return;
+            }
+            console.log("zum letzten Tab mit STRG+9 gewechselt");
+          });
+        }
+      }
+      if (event === 'io.new_waip') {
+        console.log('Einsatz erkannt');
+
+        // Monitor einschalten
+        if (standby_screen) {
+          console.log("AN - Display einschalten");
+          var yourscript = exec("~/screen-on.sh", (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+              console.log(`exec error: ${error}`);
+            }
+          });
+        }
+
+        // Zum Alarmmonitor-Tab wechseln
+        if (standby_tab) {
+          console.log("zum ersten Tab - Alarmmonitor - wechseln");
+          exec("xdotool key ctrl+1", (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Fehler beim Ausführen von xdotool: ${error}`);
+              return;
+            }
+            console.log("zum ersten Tab mit STRG+1 gewechselt");
+          });
+        }
+      }
+    }
+  });
 }
 
-console.log("start", waipurl, wachennr);
-
-const socket = io(waipurl, {
-  transports: ["websocket"],
-  rejectUnauthorized: false,
-});
-
-socket.on("connect", function () {
-  console.log("connect", waipurl, wachennr, standbyurl);
-  socket.emit("WAIP", wachennr);
-});
-
-socket.on("connect_error", (err) => {
-  console.log("Socket.IO-Fehler", err.message);
-});
-
-socket.on("io.new_waip", function () {
-  if (isURL(standbyurl)) {
-    // zum Alarmmonitor-Tab wechseln
-    console.log("zum ersten Tab - Alarmmonitor - wechseln");
-    exec("xdotool key ctrl+1", (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Fehler beim Ausführen von xdotool: ${error}`);
-        return;
-      }
-      console.log("zum ersten Tab mit STRG+1 gewechselt");
-    });
-  } else {
-    // Monitor einschalten
-    console.log("AN - Display einschalten");
-    var yourscript = exec("~/screen-on.sh", (error, stdout, stderr) => {
-      console.log(stdout);
-      console.log(stderr);
-      if (error !== null) {
-        console.log(`exec error: ${error}`);
-      }
-    });
-  }
-});
-
-socket.on("io.standby", function () {
-  if (isURL(standbyurl)) {
-    // zweiten Tab im Browser oeffnen und Standby-URL oeffnen
-    console.log("zum letzten Tab - Standbyseite - wechseln");
-    exec("xdotool key ctrl+9", (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Fehler beim Ausführen von xdotool: ${error}`);
-        return;
-      }
-      console.log("zum letzten Tab mit STRG+9 gewechselt");
-    });
-  } else {
-    // keine Standby-URl ---> Bildschirm ausschalten
-    console.log("AUS - Display ausschalten");
-    var yourscript = exec("~/screen-off.sh", (error, stdout, stderr) => {
-      console.log(stdout);
-      console.log(stderr);
-      if (error !== null) {
-        console.log(`exec error: ${error}`);
-      }
-    });
-  }
-});
+console.log('start', 'Display:', standby_screen, 'Tab:', standby_tab);
+waip_sniffer();
