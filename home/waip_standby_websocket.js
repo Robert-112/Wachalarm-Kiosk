@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Robert Richter, 2025-08-08
+// Robert Richter, 2025-08-11
 
 let standby_screen = process.env.npm_config_standby_screen;
 let standby_tab = process.env.npm_config_standby_tab;
@@ -26,7 +26,7 @@ const CDP = require('chrome-remote-interface');
 const { exec } = require("child_process");
 
 async function waip_sniffer() {
-  
+
   // mit Chrome DevTools Protocol (CDP) verbinden
   const client = await CDP();
 
@@ -34,6 +34,11 @@ async function waip_sniffer() {
 
   await Network.enable();
   await Page.enable();
+
+  // Websocket erstellt
+  Network.webSocketCreated(({ requestId, url }) => {
+    console.log('WebSocket erstellt:', url);
+  });
 
   // WebSocket-Nachrichten aus Chromium verarbeiten
   Network.webSocketFrameReceived(({ requestId, timestamp, response }) => {
@@ -110,6 +115,34 @@ async function waip_sniffer() {
       }
     }
   });
+
+  // Netzwerk 3G-Drosselung aktivieren
+  await Network.emulateNetworkConditions({
+    offline: false,
+    latency: 200, // 200 ms Latenz
+    downloadThroughput: 500 * 1024 / 8, // 500 KB/s Download
+    uploadThroughput: 500 * 1024 / 8, // 500 KB/s Upload
+    connectionType: 'cellular3g'
+  });
+  console.log('Netzwerkdrosselung aktiviert');
+
+  // Seite vollständig neu laden (kein Cache), damit die WebSocket-Verbindung korrekt ausglesen wird
+  await Page.reload({ ignoreCache: true });
+  console.log('Seite neu geladen');
+
+  // 10 Sekunden warten, um sicherzustellen, dass die WebSocket-Verbindung hergestellt ist
+  await new Promise(resolve => setTimeout(resolve, 10000));
+
+  // Netzwerk-Drosselung aufheben
+  await Network.emulateNetworkConditions({
+    offline: false,
+    latency: 0,
+    downloadThroughput: 0,
+    uploadThroughput: 0,
+    connectionType: 'none'
+  });
+  console.log('Netzwerkdrosselung aufgehoben, warte auf WebSocket-Nachrichten...');
+
 }
 
 console.log('start', 'Display:', standby_screen, 'Tab:', standby_tab);
