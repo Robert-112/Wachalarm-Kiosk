@@ -116,32 +116,13 @@ async function waip_sniffer() {
     }
   });
 
-  // Netzwerk 3G-Drosselung aktivieren
-  await Network.emulateNetworkConditions({
-    offline: false,
-    latency: 200, // 200 ms Latenz
-    downloadThroughput: 500 * 1024 / 8, // 500 KB/s Download
-    uploadThroughput: 500 * 1024 / 8, // 500 KB/s Upload
-    connectionType: 'cellular3g'
+  // WebSocket-Nachricht zum Verbindungsaufbau erneut senden
+  await client.Runtime.evaluate({
+    expression: `
+      socket.emit("WAIP", window.wachen_id);
+     `
   });
-  console.log('Netzwerkdrosselung aktiviert');
-
-  // Seite vollständig neu laden (kein Cache), damit die WebSocket-Verbindung korrekt ausglesen wird
-  await Page.reload({ ignoreCache: true });
-  console.log('Seite neu geladen');
-
-  // 10 Sekunden warten, um sicherzustellen, dass die WebSocket-Verbindung hergestellt ist
-  await new Promise(resolve => setTimeout(resolve, 10000));
-
-  // Netzwerk-Drosselung aufheben
-  await Network.emulateNetworkConditions({
-    offline: false,
-    latency: 0,
-    downloadThroughput: 0,
-    uploadThroughput: 0,
-    connectionType: 'none'
-  });
-  console.log('Netzwerkdrosselung aufgehoben, warte auf WebSocket-Nachrichten...');
+  console.log('WAIP-Event gesendet');
 
 }
 
