@@ -6,15 +6,23 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 
 ![Wachalarm FF Elsterwerda](https://user-images.githubusercontent.com/19272095/89555705-ae166100-d810-11ea-99d6-089c08687a14.png)
 
+*Beispielfoto: Wachalarm IP-Web in einer Wache (Version 1)*
+
 ## Funktionen
 
-- **Startet unmittelbar im Vollbild** - Chromium Web-Browser mit allen wichtigen Funktionen
-- **Automatatische Sicherheitsupdates** - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
-- **Automatische Wiederherstellung** - bei Neustart oder Stromausfall startet das System im vorherigen Zustand eigenständig neu
-- *Optional:*
-   - **Stromsparfunktion** - liegt kein Alarm an, kann der Monitor autmoatisch ausgeschaltet werden
-   - **andere Webseite im Standby** - liegt kein Alarm an, kann eine andere Webseite mit eigenen Informationen angezeigt werden
-- **Maus wird ausgeblendet** - sofern eine Maus angeschlossen ist, wird diese nach inaktivität ausgeblendet
+Das SD-Karten-Image für einen Raspberry-Pi bietet viele nützliche Funktionen, um **`Wachalarm IP-Web`** einfach und schnell auf einem Monitor anzuzeigen. Hierzu zählen:
+
+- **Startet unmittelbar im Vollbild**
+  - mittels Chromium Web-Browser mit allen wichtigen Funktionen
+- **Automatatische Sicherheitsupdates**
+  - wichtige Updates werden automatisch installiert, bei Bedarf erfolgt in der Nacht ein automatischer Neustart
+- **Automatische Wiederherstellung**
+  - bei Neustart oder Stromausfall startet das System im vorherigen Zustand eigenständig neu
+- **Stromsparfunktion** *(optional)*
+  - liegt kein Alarm / Einsatz an, kann der Monitor automatisch ausgeschaltet werden
+- **andere Webseite im Standby** *(optional)*
+  - liegt kein Alarm / Einsatz an, kann eine andere Webseite mit eigenen Informationen angezeigt werden
+- **ausblenden des Mauszeigers** - sofern eine Maus angeschlossen ist, wird diese nach inaktivität ausgeblendet
 
 ---
 
@@ -34,7 +42,7 @@ Hier finden Sie ein einfach zu nutzendes SD-Karten-Image für einen **Raspberry 
 
 ---
 
-# Einstellungen (Konfigurations-Datei)
+# Einstellungen mittels Konfigurations-Datei
 
 Die wichtigsten Einstellungen lassen sich ohne Vorkenntnisse (von z.B. Linux) direkt mit einem normalen PC anpassen.
 
@@ -44,11 +52,12 @@ Benötigt wird ein SD-Karten-Lesegerät und ein Text-Editor.
 2. Im Datei-Explorer sollte jetzt ein neues Laufwerk erscheinen. In der Partition `Boot` auf der SD-Karte findet sich die Datei *[wachalarm_einstellungen.txt](https://github.com/Robert-112/Wachalarm-Kiosk/blob/custom/home/wachalarm_einstellungen.txt)*.
 3. Die nachfolgenden Einstellungen können gesetzt werden:
 
+
 ## Webseite beim Start
 
-Legt fest, welche Webseite beim Start geöffnet werden soll. Wollen Sie den Wachalarm z.B. für die Feuerwehr Willmersdorf anzeigen wäre dies z.B. die Adresse [https://wachalarm.cloud.lstbb.de/waip/520101](https://wachalarm.cloud.lstbb.de/waip/521204)
+Legt fest, welche Webseite beim Start geöffnet werden soll. Wollen Sie den Wachalarm z.B. für die Feuerwehr Willmersdorf anzeigen müsste diese Adresse hinterlegt werden: [https://wachalarm.cloud.lstbb.de/waip/520101](https://wachalarm.cloud.lstbb.de/waip/521204)
 
-```
+```bash
 startup_url=https://wachalarm.cloud.lstbb.de/waip/521204
 ```
 
@@ -62,7 +71,7 @@ Es gibt folgende Optionen:
 - 1 = aktiviert diese Funktion (Monitor geht aus sobald kein Alarm mehr angzeigt wird)
 - 0 = deaktivert diese Funktion (Monitor bleibt immer an)
 
-```
+```bash
 standby_enable=1
 ```
 
@@ -75,7 +84,7 @@ Es gibt folgende Optionen:
 - t = Typ "TV", nutzt [CEC-Befehle](https://de.wikipedia.org/wiki/Consumer_Electronics_Control) um den Fernseher ein- oder auszuschalten
 - m = Typ "Monitor", nutzt den Befehlssatz `xrandr --output HDMI-*` um einen PC-Monitor ein- oder auszuschalten
 
-```
+```bash
 screen_type=t
 ```
 
@@ -87,29 +96,9 @@ screen_type=t
 
 # Optionale Einstellungen
 
-## System-Statusmeldungen
-
-Hiermit kann ein automatisches Senden von Status-Meldungen aktiviert werden. 
-
-Es handelt sich um allgemeine Systeminforamtionen wie z.B. Kernel-Version, Hardwaremerkmale & Udpatestatus. Personenbezogene Daten werden nicht verarbeitet.
-
-- 1 = an
-- 0 = aus
-
-```
-report_enable=1
-```
-
-### System-Statusmeldungen - Status-URL
-*(gilt nur wenn System-Statusmeldungen aktiviert wurden)*
-
-URL an welche Status-Meldungen durch das System gesendet werden.
-
-```
-report_url=https://wachalarm.cloud.lstbb.de/client_statusmessage
-```
-
 ## automatische Neustarts in der Nacht
+
+*`(diese Einstellung ist optional)`*
 
 Legt fest, ob und wann, ein automatischer Neustart des Raspberry Pi erfolgen soll. 
 
@@ -119,11 +108,13 @@ Es gibt folgende Optionen:
 - z = Neustart jeden Dienstag und jeden Freitag um 3:00 Uhr.
 - t = Neustart jeden Tag um 3:00 Uhr.
 
-```
+```bash
 restart_type=w
 ```
 
 ## Neustart bei fehlender WLAN-Verbindung
+
+*`(diese Einstellung ist optional)`*
 
 Diese Funktion ist hilfreich um z.B. bei schlechten WLAN-Verbindungen den Rechner automatisch neuzustarten, damit er sich wieder mit dem WLAN verbindet.
 
@@ -134,19 +125,21 @@ Es wird durch ein Skript die Erreichbarkeit der IP-Adresse des Gateways der WLAN
 - 1 = an
 - 0 = aus
 
-```
+```bash
 check_wifi=1
 ```
 
 ## Proxy-Einstellungen
 
-In Unternehmen werden oftmals Proxy-Systeme für den Zugriff auf das Internet eingesetzt. Hierfür können zwei Werte gesetzt werden
+*`(diese Einstellung ist optional)`*
+
+In Unternehmen werden oftmals Proxy-Systeme für den Zugriff auf das Internet eingesetzt. Hierfür können zwei Werte gesetzt werden.
 
 ### Proxy-PAC (WPAD)
 
 URL für eine automatische Proxy-Konfiguraiton per WPAD. Zum aktivieren wird das `#` vor dem Wert entfernt.
 
-```
+```bash
 proxy_pac_url=https://wpad.intern.lokal.de
 ```
 
@@ -154,7 +147,7 @@ proxy_pac_url=https://wpad.intern.lokal.de
 
 URL für einen zu verwenden Proxy-Server. Zum aktivieren wird das `#` vor dem Wert entfernt.
 
-```
+```bash
 proxy_server_url=http://proxy.intern.de:3128
 ```
 
@@ -162,32 +155,65 @@ proxy_server_url=http://proxy.intern.de:3128
 
 ### Eigenes Logo beim Start
 
+*`(diese Einstellung ist optional)`*
+
 Pfad auf der SD-Karte, für ein eigenes Start-Logo.
 Wird beim Start auf die SD-Karte übernommen. Zum aktivieren wird das `#` vor dem Wert entfernt.
 (/boot/firmware/background.png = background.png auf der SD-Karte unter Windows)
 
-```
+```bash
 custom_start_picture=/boot/firmware/background.png
 ```
 
 ### Webseite wenn kein Einsatz anliegt
 
+*`(diese Einstellung ist optional)`*
+
 Soll im Standby (es ist kein Alarm aktiv) eine andere Webseite angezeigt werden, dann kann hier eine entsprechende Adresse angegeben werden. Zum aktivieren wird das `#` vor dem Wert entfernt.
 
-```
+```bash
 custom_standby_url=https://uhr.ptb.de/
 ```
 
 > **Achtung!**
 >
-> Der Wert `standby_enable` muss auf `0` gesetzt sein, sonst wird der Monitor im Standby ausgeschaltet und die gewünschte Webseite wird nicht angezeigt.
+> - Der Wert `standby_enable` muss auf `0` gesetzt sein, sonst wird der Monitor im Standby ausgeschaltet und die gewünschte Webseite wird nicht angezeigt.
+> - Wenn Sie eine URL mit Parametern verwenden dann sollten Sie das `&` mit einem vorangeführten `\` „Escapen“. Hier ein Beispiel:
+>   -  falscher Wert: `custom_standby_url=https://www.internet.de/?parameter1=false&parameter2=true`
+>   -  korrigierter Wert: `custom_standby_url=https://www.internet.de/?parameter1=false\&parameter2=true`
 
 ### spezielle Funktionen des Browsers aktiveren 
 
+*`(diese Einstellung ist optional)`*
+
 Hiermit kann z.B. der Paramaeter `WebContentsForceDark` des Chromium-Browsers übergeben werden. So werden Webseiten im Dark-Mode angezeigt (sofern verfügbar). Zum Aktivieren wird das `#` vor dem Wert entfernt.
 
-```
+```bash
 custom_features=WebContentsForceDark
+```
+
+## System-Statusmeldungen 
+
+*`(diese Einstellung ist optional)`*
+
+Hiermit kann ein automatisches Senden von Status-Meldungen aktiviert werden. 
+
+Es handelt sich um allgemeine Systeminforamtionen wie z.B. Kernel-Version, Hardwaremerkmale & Udpatestatus. Personenbezogene Daten werden nicht verarbeitet.
+
+- 1 = an
+- 0 = aus
+
+```bash
+report_enable=1
+```
+
+### System-Statusmeldungen - Status-URL
+*(gilt nur wenn System-Statusmeldungen aktiviert wurden)*
+
+URL an welche Status-Meldungen durch das System gesendet werden.
+
+```bash
+report_url=https://wachalarm.cloud.lstbb.de/client_statusmessage
 ```
 
 ---
@@ -229,7 +255,7 @@ Bereits angepasste `cmdline.txt`-Dateien finden Sie hier: [optional_boot_config]
 
 # Hardware
 
-Dieses Image sollte mit allen bekannten [Raspberry Pi's](https://www.raspberrypi.org/products/) funktionieren. Die Versionen 3 und 4 werden empfohlen, da die älteren Varianten zu wenig Leistung bieten. Raspberry 3 und 4 haben zudem ein eingebautes WLAN-Modul.
+Das bereitgestelle Image sollte mit allen bekannten [Raspberry Pi's](https://www.raspberrypi.org/products/) funktionieren. Die Versionen 4 und 5 werden empfohlen, da die älteren Varianten zu wenig Leistung bieten. Raspberry 4 und 5 haben zudem ein eingebautes WLAN-Modul.
 
 Stellen Sie sicher, dass Sie eine [kompatible SD-Karte](http://elinux.org/RPi_SD_cards) verwenden (mind. 4 GB). `Class 10`-Karten sollten in jedem Fall funktionieren.
 
